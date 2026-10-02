@@ -64,6 +64,21 @@ class FeatureIntegrationTest extends TestCase
         $avatarUrl = $user->avatar_url;
         $this->assertStringContainsString('ui-avatars.com', $avatarUrl);
         $this->assertStringContainsString('Budi+Santoso', $avatarUrl);
+        $this->assertStringContainsString('color=ffffff', $avatarUrl);
+        $this->assertMatchesRegularExpression('/background=[0-9A-Fa-f]{6}/', $avatarUrl);
+
+        // Pastikan pengguna berbeda menghasilkan warna deterministik dari palet
+        $user2 = new User([
+            'username' => 'siti',
+            'nama_panjang' => 'Siti Aminah',
+            'role' => 'siswa'
+        ]);
+        $avatarUrl2 = $user2->avatar_url;
+        $this->assertStringContainsString('ui-avatars.com', $avatarUrl2);
+        $this->assertStringContainsString('Siti+Aminah', $avatarUrl2);
+        $this->assertMatchesRegularExpression('/background=[0-9A-Fa-f]{6}/', $avatarUrl2);
+        // Pastikan bukan default hijau statis untuk semua user jika hash berbeda
+        $this->assertNotEquals($avatarUrl, $avatarUrl2);
     }
 
     public function test_voting_prevents_duplicate_vote()

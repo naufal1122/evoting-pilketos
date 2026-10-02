@@ -52,7 +52,25 @@ class User extends Authenticatable
             $name = 'Siswa';
         }
         $encoded = urlencode($name);
-        // Menggunakan UI Avatars dengan background hijau elegan dan teks putih
-        return "https://ui-avatars.com/api/?name={$encoded}&background=10b981&color=ffffff&bold=true&format=svg";
+
+        // Palet warna yang variatif, cerah, dan elegan
+        $colors = [
+            '3B82F6', // Blue
+            '10B981', // Emerald
+            '6366F1', // Indigo
+            'F59E0B', // Amber
+            'EC4899', // Pink
+            '8B5CF6', // Purple
+            '14B8A6', // Teal
+            'F97316', // Orange
+            '06B6D4', // Cyan
+            'EF4444', // Red
+        ];
+
+        $key = !empty($this->username) ? $this->username : $name;
+        $colorIndex = abs(crc32($key)) % count($colors);
+        $bgColor = $colors[$colorIndex];
+
+        return "https://ui-avatars.com/api/?name={$encoded}&background={$bgColor}&color=ffffff&bold=true&format=svg";
     }
 }

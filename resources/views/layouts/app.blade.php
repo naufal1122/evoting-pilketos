@@ -32,7 +32,7 @@
         }
 
         body {
-            background-color: #f0fdf4;
+            background-color: #f4f6f9;
             font-family: 'Nunito', sans-serif;
         }
 
@@ -123,9 +123,9 @@
             height: 42px;
             border-radius: 50%;
             object-fit: cover;
-            border: 2px solid #a7f3d0;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.08);
-            background-color: #ecfdf5;
+            border: 2px solid #ffffff;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.12);
+            background-color: #f1f5f9;
         }
 
         html, body {
