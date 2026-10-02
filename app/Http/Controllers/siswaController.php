@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Paslon;
-use App\voting;
+use App\Voting;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth; // Pastikan mengimpor Auth
@@ -71,6 +71,12 @@ class siswaController extends Controller
 
         $noUrutPaslon = $paslon->no_urut_paslon;
         $idUser = Auth::user()->id;
+
+        // Cek jika siswa sudah pernah memilih
+        if (Voting::where('id_user', $idUser)->exists()) {
+            Alert::warning('Peringatan', 'Anda sudah memberikan suara sebelumnya!');
+            return redirect('/home');
+        }
 
         try {
             DB::beginTransaction(); // Memulai transaksi

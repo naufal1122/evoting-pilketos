@@ -1,5 +1,5 @@
 @php
-    use App\voting;
+    use App\Voting;
     use App\HasilVoting;
 @endphp
 
@@ -113,7 +113,7 @@ Detail Paslon
                     $id_user = Auth::user()->id;
                 @endphp
 
-                @if(voting::where('id_user', $id_user)->first())
+                @if(Voting::where('id_user', $id_user)->first())
                     <a href="/pilihPaslon/{{ $data->id }}" class="btn btn-success btn-mb shadow disabled voteBtn">Pilih Calon</a> <!-- Ukuran tombol kecil -->
                 @else
                     <a href="/pilihPaslon/{{ $data->id }}"

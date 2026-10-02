@@ -1,5 +1,7 @@
 <?php
 
+namespace Database\Seeders;
+
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -17,7 +19,7 @@ class AdminUserSeeder extends Seeder
             'username' => 'naufaldewa',
             'role' => 'admin',
             'email' => 'naufaldewa@gmail.com',
-            'password' => Hash::make('password'), // Sesuaikan jika ingin password
+            'password' => Hash::make('password'),
             'created_at' => now(),
             'updated_at' => now(),
         ]);

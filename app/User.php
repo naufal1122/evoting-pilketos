@@ -39,6 +39,6 @@ class User extends Authenticatable
     // Menambahkan relasi ke tabel tbl_voting
     public function voting()
     {
-        return $this->hasOne('App\voting', 'id_user', 'id');
+        return $this->hasOne(Voting::class, 'id_user', 'id');
     }
 }

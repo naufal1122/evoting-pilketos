@@ -7,8 +7,8 @@ use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use RealRashid\SweetAlert\Facades\Alert;
-use App\User; // Tambahkan ini untuk model User
+use Illuminate\Support\Facades\Hash;
+use App\User;
 
 class LoginController extends Controller
 {
@@ -21,30 +21,41 @@ class LoginController extends Controller
         $this->middleware('guest')->except('logout');
     }
 
-    protected function logout(Request $request)
+    public function logout(Request $request)
     {
         Auth::logout();
-        return redirect('/'); // Atau redirect ke halaman lain
+        return redirect()->route('login');
     }
 
-    public function login(Request $request) {
+    public function login(Request $request)
+    {
         $this->validate($request, [
             'password' => 'required'
         ]);
 
-        // Mencari user berdasarkan password
-        $user = User::where('password', $request->password)->first();
+        $inputPassword = $request->password;
 
-        // Cek apakah user ditemukan berdasarkan password
+        // 1. Cari user berdasarkan password plaintext (format NIS siswa)
+        $user = User::where('password', $inputPassword)->first();
+
+        // 2. Jika tidak ditemukan, cek apakah password dicocokkan dengan hash Bcrypt (akun Admin)
+        if (!$user) {
+            foreach (User::all() as $u) {
+                if (Hash::check($inputPassword, $u->password)) {
+                    $user = $u;
+                    break;
+                }
+            }
+        }
+
         if ($user) {
             Auth::login($user);
-            // Menggunakan session flash untuk notifikasi sukses
+            if ($user->role === 'admin') {
+                return redirect()->route('dashboard')->with('success', 'Selamat Datang Admin');
+            }
             return redirect()->route('home')->with('success', 'Login Berhasil');
         } else {
-            // Menggunakan session flash untuk notifikasi warning
-            return redirect()->route('login')->with('warning', 'Password Salah');
+            return redirect()->route('login')->with('warning', 'Password / NIS Salah');
         }
     }
-
-
 }

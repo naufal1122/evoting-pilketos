@@ -7,7 +7,7 @@ use App\Imports\UserImport;
 use App\Exports\SiswaExport;
 use App\Paslon;
 use App\User;
-use App\voting;
+use App\Voting;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
@@ -212,7 +212,7 @@ class AdminController extends Controller
 
     public function voteSelesai() {
         for ($i = 1; $i <= 3; $i++) { // Gantilah 3 dengan jumlah kandidat yang sebenarnya
-            $hasilNoUrut = voting::where('no_urut_paslon', $i)->count();
+            $hasilNoUrut = Voting::where('no_urut_paslon', $i)->count();
 
             // Jika hasil voting untuk no urut belum ada, buat baru
             if (!HasilVoting::where('no_urut_paslon', $i)->exists()) {
@@ -239,7 +239,7 @@ class AdminController extends Controller
         // Loop untuk setiap nomor urut paslon
         for ($i = 1; $i <= 3; $i++) { // Sesuaikan jumlah paslon sesuai kebutuhan
             // Hitung jumlah vote untuk no urut paslon dari tabel voting
-            $jumlahVote = voting::where('no_urut_paslon', $i)->count();
+            $jumlahVote = Voting::where('no_urut_paslon', $i)->count();
 
             // Simpan hasil ke array
             $hasilVote[] = [
@@ -306,7 +306,7 @@ class AdminController extends Controller
         HasilVoting::truncate();
 
         // Hapus semua data di tabel voting jika perlu (opsional)
-        voting::truncate();
+        Voting::truncate();
 
         Alert::success('Success', 'Voting telah diulang');
         return redirect('/dashboard');
