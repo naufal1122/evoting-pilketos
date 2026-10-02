@@ -34,11 +34,11 @@ Pemilihan
 
 @section('content')
 @include('sweetalert::alert')
-<section class="bg-primary mt-n4">
+<section class="mt-n4">
     <div class="container-fluid" style="padding-left: 15px; padding-right: 15px;">
         <div class="row judul mx-auto">
             <div class="col-md-7 mt-5">
-                <h1 class="text-white">Pilih Caketos Kesayanganmu</h1>
+                <h1 style="color: #1e293b; font-weight: 700;">Pilih Caketos Kesayanganmu</h1>
                 @if( count(HasilVoting::all()) >= 1 )
                 <a href="/hasilVote" class="btn btn-success ml-1 mt-2 btnpaslon w-25">Hasil Vote</a>
                 @endif

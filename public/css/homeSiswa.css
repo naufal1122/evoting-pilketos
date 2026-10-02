@@ -15,7 +15,7 @@
 
 body {
     min-height: 100vh;
-    background-color: #f0fdf4 !important;
+    background-color: #f8fafc !important;
 }
 
 section {
@@ -30,7 +30,7 @@ section .container .row:nth-child(3) {
 .card {
     border: none;
     border-radius: 12px;
-    box-shadow: 0 10px 25px rgba(16, 185, 129, 0.10), 0 4px 10px rgba(0, 0, 0, 0.04);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.06), 0 4px 10px rgba(0, 0, 0, 0.03);
     min-height: 440px;
     margin-top: 24px;
     width: 95%;
@@ -41,7 +41,7 @@ section .container .row:nth-child(3) {
 
 .card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 16px 32px rgba(16, 185, 129, 0.16), 0 6px 16px rgba(0, 0, 0, 0.06);
+    box-shadow: 0 16px 32px rgba(16, 185, 129, 0.14), 0 6px 16px rgba(0, 0, 0, 0.06);
 }
 
 .rowOpsi {
@@ -52,6 +52,8 @@ section .container .row:nth-child(3) {
 .card-header {
     height: 52px;
     border: none;
+    border-top-left-radius: 12px !important;
+    border-top-right-radius: 12px !important;
     background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
     color: #ffffff;
 }

@@ -32,7 +32,6 @@ body {
     box-shadow: 0 10px 30px rgba(16, 185, 129, 0.12), 0 4px 12px rgba(0, 0, 0, 0.05);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     background: #ffffff;
-    overflow: hidden;
 }
 
 .container1 .card:hover {
@@ -41,7 +40,7 @@ body {
 }
 
 .container1 .card-header {
-    height: 150px;
+    height: 140px;
     border-top-left-radius: 12px;
     border-top-right-radius: 12px;
     border: none;
@@ -53,12 +52,19 @@ body {
     font-size: 26px;
     letter-spacing: 0.5px;
     color: #ffffff;
-    margin-bottom: 8px;
+    margin-bottom: 0;
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+    transform: translateY(22px);
 }
 
 .container1 .card-header img {
-    filter: drop-shadow(0 4px 6px rgba(0,0,0,0.15));
+    transform: translateY(38px);
+    filter: drop-shadow(2px 2px 0 white) drop-shadow(-2px 2px 0 white) drop-shadow(2px -2px 0 white) drop-shadow(-2px -2px 0 white);
+    z-index: 10;
+}
+
+.container1 .card-body {
+    padding-top: 48px;
 }
 
 .form-group label {
