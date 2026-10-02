@@ -41,4 +41,18 @@ class User extends Authenticatable
     {
         return $this->hasOne(Voting::class, 'id_user', 'id');
     }
+
+    /**
+     * Dapatkan avatar URL berdasarkan nama siswa / username jika NA atau blank
+     */
+    public function getAvatarUrlAttribute()
+    {
+        $name = !empty($this->nama_panjang) ? trim($this->nama_panjang) : trim($this->username);
+        if (empty($name)) {
+            $name = 'Siswa';
+        }
+        $encoded = urlencode($name);
+        // Menggunakan UI Avatars dengan background hijau elegan dan teks putih
+        return "https://ui-avatars.com/api/?name={$encoded}&background=10b981&color=ffffff&bold=true&format=svg";
+    }
 }

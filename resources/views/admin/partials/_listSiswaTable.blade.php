@@ -24,19 +24,18 @@
             <td class="text-center">{{ $siswa->password }}</td>
             <td class="text-center">{{ $siswa->kelas }}</td>
             <td class="text-center">
-                    @if ($siswa->voting)
-                        Sudah Memilih
-                    @else
-                        Belum Memilih
-                    @endif
-                </td>
+                @if ($siswa->voting)
+                    <span class="badge badge-success px-2 py-1"><i class="fas fa-check-circle mr-1"></i> Sudah Memilih</span>
+                @else
+                    <span class="badge badge-warning text-dark px-2 py-1"><i class="fas fa-clock mr-1"></i> Belum Memilih</span>
+                @endif
+            </td>
             <td class="text-center">
-                <a href="#" class="btn btn-primary btnaksi">Detail</a>
                 <form id="deleteForm-{{ $siswa->id }}" action="{{ route('siswa.hapus', $siswa->id) }}" method="POST" style="display: none;">
                     @csrf
                     @method('DELETE')
                 </form>
-                <button type="button" class="btn btn-danger" onclick="confirmDelete({{ $siswa->id }})">Hapus</button>
+                <button type="button" class="btn btn-danger btnaksi" onclick="confirmDelete({{ $siswa->id }})"><i class="fas fa-trash-alt mr-1"></i> Hapus</button>
             </td>
         </tr>
         @endforeach

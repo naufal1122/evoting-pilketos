@@ -24,46 +24,108 @@
     <link rel="icon" href="{{ asset('/img/logosss.png') }}" type="image/x-icon">
     @yield('css')
     <style>
-        body {
-            background-color: #f6f8fb;
+        :root {
+            --primary-green: #10b981;
+            --primary-green-dark: #059669;
+            --primary-green-light: #d1fae5;
+            --accent-green: #047857;
         }
-        .navbar-brand {
-            font-family: poppins-medium;
-            letter-spacing: .5px;
 
+        body {
+            background-color: #f0fdf4;
+            font-family: 'Nunito', sans-serif;
+        }
+
+        .navbar-brand {
+            font-family: poppins-semibold, sans-serif;
+            letter-spacing: .5px;
+            color: #065f46 !important;
+            font-weight: 700;
         }
 
         .navbar .nav-item .nav-link {
-            font-family: poppins-regular;
+            font-family: poppins-regular, sans-serif;
             letter-spacing: .3px;
-
         }
 
         .card-title, .card-text {
-            font-family: poppins-regular; /* Sama dengan navbar */
-            letter-spacing: .3px; /* Sama dengan navbar */
+            font-family: poppins-regular, sans-serif;
+            letter-spacing: .3px;
         }
+
         .nav-link {
-            color: #929dab; /* Warna link */
-            text-decoration: none; /* Menghilangkan garis bawah */
-            font-weight: bold; /* Tebal */
+            color: #64748b;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.2s ease;
         }
 
         .nav-link:hover {
-            color: #0056b3; /* Warna saat hover */
+            color: #10b981;
         }
+
         .nav-link.active {
-            position: relative; /* Buat elemen link menjadi relatif agar garis bisa diposisikan */
+            position: relative;
+            color: #059669 !important;
         }
 
         .nav-link.active::after {
-            content: ''; /* Garis tambahan */
+            content: '';
             position: absolute;
             bottom: -12px;
             left: 0;
-            width: 100%; /* Lebar garis sepanjang link */
-            height: 2px; /* Ketebalan garis */
-            background-color: #007bff; /* Warna garis */
+            width: 100%;
+            height: 3px;
+            border-radius: 2px;
+            background-color: #10b981;
+        }
+
+        /* Override Bootstrap blue with Fresh Green */
+        .bg-primary {
+            background-color: #10b981 !important;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+        }
+
+        .btn-primary {
+            background-color: #10b981 !important;
+            border-color: #10b981 !important;
+            color: #ffffff !important;
+            box-shadow: 0 2px 4px rgba(16, 185, 129, 0.25);
+            transition: all 0.2s ease-in-out;
+        }
+
+        .btn-primary:hover, .btn-primary:focus, .btn-primary:active {
+            background-color: #059669 !important;
+            border-color: #059669 !important;
+            box-shadow: 0 4px 8px rgba(16, 185, 129, 0.35);
+        }
+
+        .btn-outline-primary {
+            color: #10b981 !important;
+            border-color: #10b981 !important;
+        }
+
+        .btn-outline-primary:hover {
+            background-color: #10b981 !important;
+            color: #ffffff !important;
+        }
+
+        .border-primary {
+            border-color: #10b981 !important;
+        }
+
+        .text-primary {
+            color: #10b981 !important;
+        }
+
+        .avatar-img {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #a7f3d0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+            background-color: #ecfdf5;
         }
 
         html, body {
@@ -76,10 +138,10 @@
 </head>
 <body>
     <div id="app">
-    <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+    <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm border-bottom" style="border-color: #e5e7eb !important;">
         <div class="container">
-            <a class="navbar-brand" href="{{ url('/') }}" >
-                E - Pilketos
+            <a class="navbar-brand d-flex align-items-center" href="{{ url('/') }}" >
+                <i class="fas fa-vote-yea mr-2 text-success"></i> E - Pilketos
             </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                 <span class="navbar-toggler-icon"></span>
@@ -89,7 +151,7 @@
                 <!-- Left Side Of Navbar -->
 
                 <!-- Right Side Of Navbar -->
-                <ul class="navbar-nav ml-auto">
+                <ul class="navbar-nav ml-auto align-items-center">
                     <!-- Authentication Links -->
                     @guest
                         <li class="nav-item">
@@ -103,30 +165,24 @@
                     @else
                         <li class="nav-item dropdown">
                             <a id="navbarDropdown" class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                <!-- Gambar profil di depan -->
+                                <!-- Gambar profil di depan dengan Random Avatar berbasis Nama Siswa -->
                                 @auth
-                                @if (Auth::user()->role == 'admin')
-                                <img src="https://avatar.iran.liara.run/username?username={{ urlencode(Auth::user()->username) }}" alt="Profile Image" class="rounded-circle mr-2" style="width: 40px; height: 40px;">
-                                @endif
-                                @endauth
-                                @auth
-                                @if (Auth::user()->role == 'siswa')
-                                <img src="https://avatar.iran.liara.run/username?username={{ urlencode(Auth::user()->nama_panjang) }}" alt="Profile Image" class="rounded-circle mr-2" style="width: 40px; height: 40px;">
-                                @endif
+                                <img src="{{ Auth::user()->avatar_url }}"
+                                     alt="Profile Avatar"
+                                     class="avatar-img mr-2"
+                                     onerror="this.onerror=null; this.src='https://api.dicebear.com/7.x/bottts/svg?seed={{ urlencode(Auth::user()->nama_panjang ?? Auth::user()->username) }}';">
                                 @endauth
 
                                 <!-- Nama pengguna dan peran -->
-                                <div>
+                                <div class="text-left">
                                 @auth
                                 @if (Auth::user()->role == 'admin')
-                                    <span style="font-weight: bold; color: #394A5F;">{{ Auth::user()->username }}</span><br>
-                                    <small>{{ ucfirst(Auth::user()->role) }}</small>
+                                    <span style="font-weight: 700; color: #1e293b; font-size: 14px;">{{ Auth::user()->username }}</span><br>
+                                    <small class="badge badge-success px-2 py-0" style="font-size: 11px; background-color: #10b981;">{{ ucfirst(Auth::user()->role) }}</small>
                                 @endif
-                                @endauth
-                                @auth
                                 @if (Auth::user()->role == 'siswa')
-                                    <span style="font-weight: bold; color: #394A5F;">{{ Auth::user()->nama_panjang }}</span><br>
-                                    <small>{{ ucfirst(Auth::user()->role) }}</small>
+                                    <span style="font-weight: 700; color: #1e293b; font-size: 14px;">{{ !empty(Auth::user()->nama_panjang) ? Auth::user()->nama_panjang : Auth::user()->username }}</span><br>
+                                    <small class="badge badge-success px-2 py-0" style="font-size: 11px; background-color: #10b981;">{{ ucfirst(Auth::user()->role) }} {{ Auth::user()->kelas ? '• ' . Auth::user()->kelas : '' }}</small>
                                 @endif
                                 @endauth
                                 </div>

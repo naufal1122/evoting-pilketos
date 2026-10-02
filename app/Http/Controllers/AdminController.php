@@ -23,31 +23,16 @@ class AdminController extends Controller
 {
     public function index() {
 
-        $data = Paslon::all();
+        $data = Paslon::orderBy('no_urut_paslon', 'asc')->get();
         $totalPaslon = count($data); // Hitung jumlah paslon
         $siswaData = User::where('role', 'siswa')
             ->with('voting') // Mengambil data voting
             ->get();
         $totalSiswa = count($siswaData); // Hitung jumlah siswa
         // Hitung total suara
-        $hasilVote = [];
-        for ($i = 1; $i <= 3; $i++) { // Sesuaikan jumlah paslon sesuai kebutuhan
-            $jumlahVote = Voting::where('no_urut_paslon', $i)->count();
-            $hasilVote[] = [
-                'no_urut_paslon' => $i,
-                'jumlah_vote' => $jumlahVote
-            ];
-        }
-        $totalSuara = array_sum(array_column($hasilVote, 'jumlah_vote')); // Menghitung total suara
+        $totalSuara = Voting::count();
 
         return view('admin.dashboard', compact('data', 'totalPaslon','siswaData', 'totalSiswa', 'totalSuara'));
-            // Mengambil data siswa yang berstatus 'siswa'
-        $data = User::where('role', 'siswa')
-            ->with('voting') // Mengambil data voting
-            ->get();
-
-        return view('siswa.home', ['data' => $data]);
-
     }
 
     public function hapus( $id ) {
@@ -211,47 +196,36 @@ class AdminController extends Controller
     }
 
     public function voteSelesai() {
-        for ($i = 1; $i <= 3; $i++) { // Gantilah 3 dengan jumlah kandidat yang sebenarnya
-            $hasilNoUrut = Voting::where('no_urut_paslon', $i)->count();
+        $paslons = Paslon::all();
+        foreach ($paslons as $p) {
+            $noUrut = $p->no_urut_paslon;
+            $hasilNoUrut = Voting::where('no_urut_paslon', $noUrut)->count();
 
-            // Jika hasil voting untuk no urut belum ada, buat baru
-            if (!HasilVoting::where('no_urut_paslon', $i)->exists()) {
-                HasilVoting::create([
-                    'no_urut_paslon' => $i,
-                    'jumlah_vote' => $hasilNoUrut,
-                ]);
-            } else {
-                // Jika sudah ada, update jumlah vote
-                $hasil = HasilVoting::where('no_urut_paslon', $i)->first();
-                $hasil->update([
-                    'jumlah_vote' => $hasilNoUrut,
-                ]);
-            }
+            HasilVoting::updateOrCreate(
+                ['no_urut_paslon' => $noUrut],
+                ['jumlah_vote' => $hasilNoUrut]
+            );
         }
+        Alert::success('Success', 'Pemilihan telah resmi diselesaikan!');
         return redirect('/dashboard');
-
     }
 
     public function hasilVote() {
-        // Inisialisasi array untuk menyimpan hasil vote
+        $paslons = Paslon::orderBy('no_urut_paslon', 'asc')->get();
         $hasilVote = [];
 
-        // Loop untuk setiap nomor urut paslon
-        for ($i = 1; $i <= 3; $i++) { // Sesuaikan jumlah paslon sesuai kebutuhan
-            // Hitung jumlah vote untuk no urut paslon dari tabel voting
-            $jumlahVote = Voting::where('no_urut_paslon', $i)->count();
-
-            // Simpan hasil ke array
+        foreach ($paslons as $p) {
+            $noUrut = $p->no_urut_paslon;
+            $jumlahVote = Voting::where('no_urut_paslon', $noUrut)->count();
             $hasilVote[] = [
-                'no_urut_paslon' => $i,
+                'no_urut_paslon' => $noUrut,
+                'ketua_paslon' => $p->ketua_paslon,
                 'jumlah_vote' => $jumlahVote
             ];
         }
 
-        // Hitung total suara
-        $totalSuara = array_sum(array_column($hasilVote, 'jumlah_vote'));
+        $totalSuara = Voting::count();
 
-        // Kembalikan view dengan data hasil vote
         return view('admin.hasilVote', ['data' => $hasilVote, 'totalSuara' => $totalSuara]);
     }
 
@@ -283,22 +257,35 @@ class AdminController extends Controller
     public function importExcel( Request $request ) {
 
         $this->validate($request, [
-
             'file_excel' => 'required|mimes:csv,xls,xlsx'
-
         ]);
 
         $file = $request->file('file_excel');
+        $namaFile = time() . '_' . rand(1000, 9999) . '_' . preg_replace('/[^a-zA-Z0-9._-]/', '_', $file->getClientOriginalName());
+        $destinationPath = public_path('file_user');
 
-        $namaFile = rand().$file->getClientOriginalName();
-        $file->move('file_user', $namaFile);
+        if (!File::isDirectory($destinationPath)) {
+            File::makeDirectory($destinationPath, 0755, true, true);
+        }
 
-        Excel::import(new UserImport, public_path('/file_user' . '/' . $namaFile));
+        $filePath = $destinationPath . DIRECTORY_SEPARATOR . $namaFile;
+        $file->move($destinationPath, $namaFile);
 
-        Alert::success('Success', 'Import Data Berhasil');
+        try {
+            Excel::import(new UserImport, $filePath);
+            if (File::exists($filePath)) {
+                File::delete($filePath);
+            }
+            Alert::success('Success', 'Import Data Berhasil');
+        } catch (\Throwable $e) {
+            if (File::exists($filePath)) {
+                File::delete($filePath);
+            }
+            Log::error('Import error: ' . $e->getMessage());
+            Alert::error('Gagal Import', 'Terjadi kesalahan saat import data: ' . $e->getMessage());
+        }
 
         return redirect('/dashboard');
-
     }
 
     public function ulangVoting() {
@@ -314,10 +301,11 @@ class AdminController extends Controller
 
     public function listSiswa(Request $request)
     {
-        // Tangkap parameter search, perPage, dan status dari request
+        // Tangkap parameter search, perPage, status, dan kelas dari request
         $search = $request->input('search');
         $perPage = $request->input('perPage', 10); // Default 10 data per halaman
-        $status = $request->input('status'); // Tambahkan ini untuk status voting
+        $status = $request->input('status'); // Status voting
+        $kelas = $request->input('kelas'); // Filter kelas
 
         // Query siswa dengan kondisi pencarian
         $query = User::where('role', 'siswa')
@@ -338,15 +326,28 @@ class AdminController extends Controller
             $query->doesntHave('voting'); // Menampilkan siswa yang belum memilih
         }
 
+        // Filter berdasarkan kelas
+        if ($kelas) {
+            $query->where('kelas', $kelas);
+        }
+
         // Ambil data dengan paginasi
-        $data = $query->paginate($perPage);
+        $data = $query->paginate($perPage)->withQueryString();
+
+        // Ambil daftar kelas unik untuk dropdown filter
+        $kelasList = User::where('role', 'siswa')
+            ->whereNotNull('kelas')
+            ->where('kelas', '!=', '')
+            ->distinct()
+            ->orderBy('kelas')
+            ->pluck('kelas');
 
         // Return partial view untuk AJAX atau seluruh view jika tidak AJAX
         if ($request->ajax()) {
             return view('admin.partials._listSiswaTable', compact('data'))->render();
         }
 
-        return view('admin.listSiswa', compact('data'));
+        return view('admin.listSiswa', compact('data', 'kelasList'));
     }
 
 
@@ -409,18 +410,7 @@ class AdminController extends Controller
     }
 
     public function getTotalSuara() {
-        // Hitung total suara seperti sebelumnya
-        $hasilVote = [];
-        $totalPaslon = Paslon::count();
-        for ($i = 1; $i <= $totalPaslon; $i++) {
-            $jumlahVote = Voting::where('no_urut_paslon', $i)->count();
-            $hasilVote[] = [
-                'no_urut_paslon' => $i,
-                'jumlah_vote' => $jumlahVote
-            ];
-        }
-        $totalSuara = array_sum(array_column($hasilVote, 'jumlah_vote'));
-
+        $totalSuara = Voting::count();
         return response()->json(['total' => $totalSuara]);
     }
 

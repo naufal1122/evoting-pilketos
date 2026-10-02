@@ -24,40 +24,40 @@ Dashboard
                 </div>
                 <div class="row mt-4">
                     <div class="col-md-4 mb-3">
-                        <div class="card border-primary" style="height: 100%;">
+                        <div class="card border-0 shadow-sm" style="height: 100%;">
                             <div class="card-body d-flex align-items-center">
-                                <div style="width: 40px; height: 40px; background-color: #4299E1; border-radius: 5px; display: flex; align-items: center; justify-content: center; color: white; margin-right: 10px;">
+                                <div style="width: 44px; height: 44px; background: linear-gradient(135deg, #10b981 0%, #059669 100%); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; margin-right: 12px; box-shadow: 0 4px 10px rgba(16, 185, 129, 0.25);">
                                     <i class="fas fa-users"></i>
                                 </div>
                                 <div>
-                                    <h5 class="card-title ml-2" style="margin-bottom: 2px; margin-top: 0; font-weight: bold;"> {{ $totalSiswa }} Pemilih</h5>
-                                    <p class="card-text ml-2" style="margin: 0;">Total Pemilih</p>
+                                    <h5 class="card-title ml-2" style="margin-bottom: 2px; margin-top: 0; font-weight: bold; color: #1e293b;"> {{ $totalSiswa }} Pemilih</h5>
+                                    <p class="card-text ml-2 text-muted" style="margin: 0; font-size: 13.5px;">Total Pemilih</p>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-4 mb-3">
-                        <div class="card border-success" style="height: 100%;">
+                        <div class="card border-0 shadow-sm" style="height: 100%;">
                             <div class="card-body d-flex align-items-center">
-                                <div style="width: 40px; height: 40px; background-color: #2FB344; border-radius: 5px; display: flex; align-items: center; justify-content: center; color: white; margin-right: 10px;">
-                                    <i class="fas fa-smile"></i>
+                                <div style="width: 44px; height: 44px; background: linear-gradient(135deg, #059669 0%, #047857 100%); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; margin-right: 12px; box-shadow: 0 4px 10px rgba(5, 150, 105, 0.25);">
+                                    <i class="fas fa-user-tie"></i>
                                 </div>
                                 <div>
-                                    <h5 class="card-title ml-2" style="margin-bottom: 2px; margin-top: 0; font-weight: bold;">{{ $totalPaslon }} Kandidat</h5>
-                                    <p class="card-text ml-2" style="margin: 0;">Total Kandidat</p>
+                                    <h5 class="card-title ml-2" style="margin-bottom: 2px; margin-top: 0; font-weight: bold; color: #1e293b;">{{ $totalPaslon }} Kandidat</h5>
+                                    <p class="card-text ml-2 text-muted" style="margin: 0; font-size: 13.5px;">Total Kandidat</p>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-4 mb-3">
-                        <div class="card border-info" style="height: 100%;">
+                        <div class="card border-0 shadow-sm" style="height: 100%;">
                             <div class="card-body d-flex align-items-center" id="totalSuaraContainer">
-                                <div style="width: 40px; height: 40px; background-color: #1DA1F2; border-radius: 5px; display: flex; align-items: center; justify-content: center; color: white; margin-right: 10px;">
+                                <div style="width: 44px; height: 44px; background: linear-gradient(135deg, #14b8a6 0%, #0f766e 100%); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; margin-right: 12px; box-shadow: 0 4px 10px rgba(20, 184, 166, 0.25);">
                                     <i class="fas fa-vote-yea"></i>
                                 </div>
                                 <div>
-                                    <h5 class="card-title ml-2" style="margin-bottom: 2px; margin-top: 0; font-weight: bold;" id="totalSuara">{{ $totalSuara }} Suara</h5>
-                                    <p class="card-text ml-2" style="margin: 0;">Total Suara Masuk</p>
+                                    <h5 class="card-title ml-2" style="margin-bottom: 2px; margin-top: 0; font-weight: bold; color: #1e293b;" id="totalSuara">{{ $totalSuara }} Suara</h5>
+                                    <p class="card-text ml-2 text-muted" style="margin: 0; font-size: 13.5px;">Total Suara Masuk</p>
                                 </div>
                             </div>
                         </div>

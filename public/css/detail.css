@@ -1,105 +1,117 @@
 @font-face {
     font-family: 'poppins-semibold';
     src: url('/font/poppins-semibold.ttf');
-
 }
 
 @font-face {
     font-family: 'poppins-regular';
     src: url('/font/poppins-regular.ttf');
-
 }
 
 @font-face {
     font-family: 'poppins-medium';
     src: url('/font/poppins-medium.ttf');
+}
 
+body {
+    background-color: #f0fdf4 !important;
 }
 
 section {
     height: 280px;
-
 }
 
 .nama p {
-    color: #888888;
-    font-family: poppins-regular;
-
+    color: #64748b;
+    font-family: 'poppins-medium', sans-serif;
 }
 
 .col-md-6 .btn {
-    font-family: poppins-medium;
-    padding: 8px 16px;
-
+    font-family: 'poppins-semibold', sans-serif;
+    padding: 8px 18px;
+    border-radius: 8px;
 }
 
 .judul .col-md-5 h1,
 .col-md-6 .visiMisi h1,
 .col-md-6 .slogan h1 {
-    font-family: poppins-semibold;
+    font-family: 'poppins-semibold', sans-serif;
     letter-spacing: .5px;
-
 }
 
 .nama h3 {
-    font-family: poppins-medium;
-
+    font-family: 'poppins-semibold', sans-serif;
+    color: #1e293b;
 }
 
 .card {
     border: none;
-    box-shadow: 0 5px 25px rgba(41, 41, 41, 0.10);
-    height: 380px;
-    margin-top: 40px;
-    width: 90%;
-
+    box-shadow: 0 8px 25px rgba(16, 185, 129, 0.10), 0 2px 6px rgba(0, 0, 0, 0.04);
+    border-radius: 12px;
+    min-height: 360px;
+    margin-top: 24px;
+    width: 92%;
+    background-color: #ffffff;
 }
 
 .row {
-    width: 90%;
-
+    width: 95%;
 }
 
 .rowVisi,
 .rowMisi {
-    margin-top: 100px;
-
+    margin-top: 50px;
 }
 
 .isiVisi,
 .isiMisi {
-    font-family: poppins-regular;
-    font-size: 18px;
-    letter-spacing: .5px;
-
+    font-family: 'poppins-regular', sans-serif;
+    font-size: 16px;
+    letter-spacing: .3px;
+    color: #334155;
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+    border-left: 4px solid #10b981;
 }
 
 .isiMisi {
-    line-height: 20px;
-    margin-top: 20px;
-
+    line-height: 24px;
+    margin-top: 15px;
 }
 
 .isiVisi {
-    margin-top: 13px;
+    margin-top: 15px;
+}
 
+.fixed-buttons .button-wrapper {
+    background-color: #ffffff;
+    padding: 12px 24px;
+    border-radius: 50px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    display: flex;
+    gap: 12px;
+    border: 1px solid #d1fae5;
+}
+
+.fixed-buttons .btn {
+    border-radius: 50px;
+    padding: 10px 24px;
 }
 
 @media(max-width: 768px) {
     .card {
         width: 100%;
-
     }
 
     .row {
-        width: 95%;
-
+        width: 100%;
     }
 
     .judul .col-md-5 h1,
     .col-md-6 .visiMisi h1,
     .col-md-6 .slogan h1 {
-        font-size: 32px;
-
+        font-size: 26px;
     }
 }

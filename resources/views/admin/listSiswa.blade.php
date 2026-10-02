@@ -28,12 +28,11 @@ List Siswa
                                         aria-expanded="false">
                                         Register Siswa
                                     </button>
-                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                        <a href="/user/importSiswa" class="dropdown-item">Import Excel</a>
-                                        <form action="{{ route('user.exportExcel') }}" method="GET">
-                                            <button type="submit" class="btn btn-success">Export Siswa</button>
-                                        </form>
-                                        <a class="dropdown-item" href="/registerSiswa">Manual Register</a>
+                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+                                        <a href="/user/importSiswa" class="dropdown-item"><i class="fas fa-file-import text-success mr-2"></i> Import Excel</a>
+                                        <a href="{{ route('user.exportExcel') }}" class="dropdown-item"><i class="fas fa-file-export text-primary mr-2"></i> Export Siswa</a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item" href="/registerSiswa"><i class="fas fa-user-plus text-info mr-2"></i> Manual Register</a>
                                     </div>
                                 </div>
                                 <form method="GET" action="{{ route('listSiswa') }}" class="form-inline mb-3" id="searchForm">
@@ -48,6 +47,18 @@ List Siswa
                                             <option value="">Semua Status</option>
                                             <option value="voted" {{ request('status') == 'voted' ? 'selected' : '' }}>Sudah Memilih</option>
                                             <option value="not_voted" {{ request('status') == 'not_voted' ? 'selected' : '' }}>Belum Memilih</option>
+                                        </select>
+                                    </div>
+
+                                    <!-- Dropdown untuk memilih kelas -->
+                                    <div class="form-group ml-2">
+                                        <select name="kelas" id="kelasSelect" class="form-control">
+                                            <option value="">Semua Kelas</option>
+                                            @if(isset($kelasList))
+                                                @foreach($kelasList as $k)
+                                                    <option value="{{ $k }}" {{ request('kelas') == $k ? 'selected' : '' }}>{{ $k }}</option>
+                                                @endforeach
+                                            @endif
                                         </select>
                                     </div>
 
@@ -79,62 +90,47 @@ List Siswa
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     $(document).ready(function() {
-        // Saat form pencarian atau dropdown perPage berubah
-        $('#searchInput, #perPageSelect').on('input change', function() {
-            fetchData();
-        });
-
         // Fungsi untuk mengambil data dan memperbarui tabel
-        function fetchData() {
-            let search = $('#searchInput').val();
-            let perPage = $('#perPageSelect').val();
-
+        function updateTable(pageUrl) {
+            let url = pageUrl || '{{ route("listSiswa") }}';
             $.ajax({
-                url: '{{ route("listSiswa") }}',
-                method: 'GET',
+                url: url,
+                type: 'GET',
                 data: {
-                    search: search,
-                    perPage: perPage
+                    search: $('#searchInput').val(),
+                    status: $('#statusSelect').val(),
+                    kelas: $('#kelasSelect').val(),
+                    perPage: $('#perPageSelect').val()
                 },
-                success: function(response) {
-                    $('#siswaTable').html(response); // Memperbarui div dengan isi tabel
+                success: function(data) {
+                    $('#siswaTable').html(data);
                 }
             });
         }
-    });
 
-    $(document).ready(function() {
-    // Fungsi untuk mengupdate tabel siswa
-    function updateTable() {
-        $.ajax({
-            url: '{{ route('listSiswa') }}', // URL untuk request
-            type: 'GET',
-            data: {
-                search: $('#searchInput').val(),
-                status: $('#statusSelect').val(),
-                perPage: $('#perPageSelect').val()
-            },
-            success: function(data) {
-                $('#siswaTable').html(data); // Update tabel
+        // Event listener saat input pencarian diketik
+        let searchTimer;
+        $('#searchInput').on('keyup', function() {
+            clearTimeout(searchTimer);
+            searchTimer = setTimeout(function() {
+                updateTable();
+            }, 300);
+        });
+
+        // Event listener saat filter dropdown berubah
+        $('#statusSelect, #kelasSelect, #perPageSelect').on('change', function() {
+            updateTable();
+        });
+
+        // Event delegation untuk pagination links via AJAX
+        $(document).on('click', '#siswaTable .pagination a', function(e) {
+            e.preventDefault();
+            let pageUrl = $(this).attr('href');
+            if (pageUrl) {
+                updateTable(pageUrl);
             }
         });
-    }
-
-    // Event untuk input pencarian
-    $('#searchInput').on('keyup', function() {
-        updateTable(); // Panggil fungsi untuk update tabel
     });
-
-    // Event untuk dropdown status
-    $('#statusSelect').on('change', function() {
-        updateTable(); // Panggil fungsi untuk update tabel
-    });
-
-    // Event untuk dropdown perPage
-    $('#perPageSelect').on('change', function() {
-        updateTable(); // Panggil fungsi untuk update tabel
-    });
-});
 </script>
 
 @endsection

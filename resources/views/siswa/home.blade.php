@@ -120,44 +120,54 @@ Pemilihan
 
     // Fungsi untuk menyimpan voting
     function handleVote(url, voteButton) {
-        // Nonaktifkan tombol dan ubah teks
-        voteButton.classList.add('disabled'); // Tambahkan kelas disabled ke tombol yang ditekan
-        voteButton.innerText = 'Menyimpan...'; // Ubah teks tombol yang dipilih
+        // Nonaktifkan semua tombol vote untuk mencegah double click/vote
+        document.querySelectorAll('#voteBtn, .voteBtn').forEach(btn => {
+            btn.classList.add('disabled');
+            btn.style.pointerEvents = 'none';
+        });
+        voteButton.innerText = 'Menyimpan...';
 
-        // AJAX request untuk voting
-        fetch(url)
-            .then(response => {
-                if (response.ok) {
-                    // Jika voting berhasil, tampilkan SweetAlert
-                    Swal.fire({
-                        title: 'Berhasil!',
-                        text: 'Terima kasih telah melakukan voting!',
-                        icon: 'success',
-                        showCancelButton: false,
-                        showConfirmButton: false, // Menyembunyikan tombol konfirmasi
-                    });
-
-                    // Logout otomatis setelah 5 detik
-                    setTimeout(() => {
-                        document.getElementById('logout-form').submit(); // Logout secara otomatis
-                    }, 5000);
-                } else {
-                    // Tangani error jika voting gagal
-                    Swal.fire({
-                        title: 'Error!',
-                        text: 'Terjadi kesalahan, silakan coba lagi.',
-                        icon: 'error'
-                    });
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
+        // AJAX request untuk voting dengan header Json
+        fetch(url, {
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'Accept': 'application/json'
+            }
+        })
+        .then(async response => {
+            const data = await response.json().catch(() => null);
+            if (response.ok && data && data.success) {
                 Swal.fire({
-                    title: 'Error!',
-                    text: 'Terjadi kesalahan, silakan coba lagi.',
-                    icon: 'error'
+                    title: 'Berhasil!',
+                    text: data.message || 'Terima kasih telah melakukan voting!',
+                    icon: 'success',
+                    showCancelButton: false,
+                    showConfirmButton: false,
                 });
+
+                // Logout otomatis setelah 3 detik
+                setTimeout(() => {
+                    document.getElementById('logout-form').submit();
+                }, 3000);
+            } else {
+                const errMsg = (data && data.message) ? data.message : 'Terjadi kesalahan, silakan coba lagi.';
+                Swal.fire({
+                    title: 'Perhatian!',
+                    text: errMsg,
+                    icon: 'warning'
+                }).then(() => {
+                    window.location.reload();
+                });
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            Swal.fire({
+                title: 'Error!',
+                text: 'Terjadi kesalahan sistem, silakan coba lagi.',
+                icon: 'error'
             });
+        });
     }
 </script>
 

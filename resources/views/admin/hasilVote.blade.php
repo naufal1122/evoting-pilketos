@@ -7,11 +7,11 @@ Hasil Vote
 @endsection
 @section('content')
 
-<section class="bg-primary mt-n4">
+<section class="mt-n4">
     <div class="container">
         <div class="row judul mx-auto">
             <div class="col-md-5 mt-5">
-                <h1 class="text-white">Hasil Vote</h1>
+                <h1 class="text" style="color: #394A5F;">Hasil Vote</h1>
             </div>
         </div>
         <div class="row mx-auto rowCard d-flex justify-content-center mt-4">
