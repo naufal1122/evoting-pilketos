@@ -76,8 +76,8 @@
             height: 140px;
             border-radius: 50%;
             object-fit: cover;
-            border: 4px solid #ffffff;
-            box-shadow: 6px 6px 14px rgba(166, 178, 195, 0.5), -4px -4px 10px rgba(255, 255, 255, 0.9);
+            border: none;
+            box-shadow: 6px 6px 14px rgba(166, 178, 195, 0.4), -4px -4px 10px rgba(255, 255, 255, 0.8);
             margin: 12px auto;
             display: block;
         }

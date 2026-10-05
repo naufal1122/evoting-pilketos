@@ -71,12 +71,9 @@ Pemilihan
         @elseif(isset($votingSchedule) && $votingSchedule['waktu_selesai'])
         <div class="row mx-auto mt-3">
             <div class="col-md-12">
-                <div class="neo-card py-2 px-4 d-flex justify-content-between align-items-center" style="background: #ffffff;">
-                    <div class="d-flex align-items-center">
-                        <span class="badge badge-success mr-2 px-2 py-1"><i class="fas fa-check-circle mr-1"></i> Pemilihan Aktif</span>
-                        <span class="text-muted" style="font-size: 13.5px;">Batas Waktu Pemilihan: <strong>{{ \Carbon\Carbon::parse($votingSchedule['waktu_selesai'])->format('d M Y, H:i') }} WIB</strong></span>
-                    </div>
-                    <span class="text-muted" style="font-size: 13px;">Auto-logout aktif setelah memilih (Kiosk Mode)</span>
+                <div class="neo-card py-2 px-4 d-flex align-items-center" style="background: #ffffff;">
+                    <span class="badge badge-success mr-2 px-2 py-1"><i class="fas fa-check-circle mr-1"></i> Pemilihan Aktif</span>
+                    <span class="text-muted" style="font-size: 13.5px;">Batas Waktu Pemilihan: <strong>{{ \Carbon\Carbon::parse($votingSchedule['waktu_selesai'])->format('d M Y, H:i') }} WIB</strong></span>
                 </div>
             </div>
         </div>

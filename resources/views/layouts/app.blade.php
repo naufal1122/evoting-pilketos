@@ -124,8 +124,8 @@
             height: 42px;
             border-radius: 50%;
             object-fit: cover;
-            border: 2px solid #ffffff;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.12);
+            border: none;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
             background-color: #f1f5f9;
         }
 
