@@ -59,8 +59,11 @@ Detail Paslon
                             class="mx-auto mt-n4" loading="lazy">
 
                         <div class="nama mt-4">
-                            <h3 class="text-center">{{ $data->ketua_paslon }}</h3>
-                            <p class="text-center mt-n1">Ketua</p>
+                            <h3 class="text-center font-weight-bold" style="color: #1e293b;">{{ $data->ketua_paslon }}</h3>
+                            <p class="text-center text-muted mt-n1 mb-1 font-weight-bold">Calon Ketua OSIS</p>
+                            @if(!empty($data->wakil_paslon) && $data->wakil_paslon !== '-')
+                                <p class="text-center text-muted mb-0" style="font-size: 15px;">Wakil: <strong style="color: #065f46;">{{ $data->wakil_paslon }}</strong></p>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -68,9 +71,10 @@ Detail Paslon
             <div class="col-md-6">
                 <div class="card mx-auto">
                     <div class="card-body d-flex flex-column justify-content-center">
-                        <div class="nama mt-4">
-                            <h3 class="text-center mt-n1">Nomor Urut {{ $data->no_urut_paslon }}</h3>
-                            <h2 class="text-center mt-n1">Calon Ketua OSIS</h2>
+                        <div class="nama mt-4 text-center">
+                            <span class="badge badge-success px-3 py-2 font-weight-bold mb-2" style="font-size: 16px; border-radius: 20px;">Kandidat Nomor Urut {{ $data->no_urut_paslon }}</span>
+                            <h3 class="font-weight-bold mt-2" style="color: #1e293b;">{{ $data->ketua_paslon }}</h3>
+                            <p class="text-muted mb-0" style="font-size: 15px;">Calon Wakil Ketua: <strong style="color: #065f46;">{{ (!empty($data->wakil_paslon) && $data->wakil_paslon !== '-') ? $data->wakil_paslon : '-' }}</strong></p>
                         </div>
                     </div>
                 </div>

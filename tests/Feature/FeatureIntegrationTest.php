@@ -280,6 +280,8 @@ class FeatureIntegrationTest extends TestCase
             'no_urut_paslon' => $maxNoUrut,
             'ketua_paslon' => 'Hatsune Miku',
         ]);
+
+        \App\Paslon::where('no_urut_paslon', $maxNoUrut)->delete();
     }
 }
 
