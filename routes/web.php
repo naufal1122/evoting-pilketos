@@ -67,8 +67,8 @@ Auth::routes();
 
 Route::group(['middleware' => ['auth' => 'CekRole:siswa']], function() {
 
-    Route::get('/home', 'siswaController@index')->name('home');
-    Route::get('/detail/{id}', 'siswaController@detail');
-    Route::get('/pilihPaslon/{id}', 'siswaController@pilihPaslon');
+    Route::get('/home', 'PemilihController@index')->name('home');
+    Route::get('/detail/{id}', 'PemilihController@detail');
+    Route::get('/pilihPaslon/{id}', 'PemilihController@pilihPaslon');
 
 });

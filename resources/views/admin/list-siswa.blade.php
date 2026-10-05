@@ -79,7 +79,7 @@ List Siswa
 
                                 <!-- Tabel Data Siswa -->
                                 <div id="siswaTable">
-                                    @include('admin.partials._listSiswaTable') <!-- Partial view yang dimuat lewat AJAX -->
+                                    @include('admin.partials._list-siswa-table') <!-- Partial view yang dimuat lewat AJAX -->
                                 </div>
                         </div>
                     </div>
