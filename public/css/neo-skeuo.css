@@ -63,6 +63,66 @@ body {
     border-color: #10b981;
 }
 
+/* Global Neo-skeuomorphic Styling for All Standard Bootstrap Buttons across All Pages */
+.btn {
+    border-radius: 12px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    transition: all 0.2s ease;
+    box-shadow: 3px 3px 8px var(--neo-dark-shadow),
+                -2px -2px 6px var(--neo-light-shadow);
+}
+
+.btn:active, .btn.active {
+    box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.25),
+                inset -1px -1px 3px rgba(255, 255, 255, 0.2) !important;
+    transform: translateY(1px);
+}
+
+.btn-primary, .btn-success {
+    background: linear-gradient(145deg, #10b981, #059669) !important;
+    border-color: rgba(255, 255, 255, 0.4) !important;
+    color: #ffffff !important;
+    box-shadow: 4px 4px 10px rgba(16, 185, 129, 0.35),
+                -3px -3px 8px var(--neo-light-shadow) !important;
+}
+
+.btn-primary:hover, .btn-success:hover {
+    background: linear-gradient(145deg, #059669, #047857) !important;
+    box-shadow: 5px 5px 12px rgba(16, 185, 129, 0.45),
+                -4px -4px 10px var(--neo-light-shadow) !important;
+    color: #ffffff !important;
+}
+
+.btn-danger {
+    background: linear-gradient(145deg, #ef4444, #dc2626) !important;
+    border-color: rgba(255, 255, 255, 0.4) !important;
+    color: #ffffff !important;
+    box-shadow: 4px 4px 10px rgba(239, 68, 68, 0.35),
+                -3px -3px 8px var(--neo-light-shadow) !important;
+}
+
+.btn-danger:hover {
+    background: linear-gradient(145deg, #dc2626, #b91c1c) !important;
+    box-shadow: 5px 5px 12px rgba(239, 68, 68, 0.45),
+                -4px -4px 10px var(--neo-light-shadow) !important;
+    color: #ffffff !important;
+}
+
+.btn-secondary, .btn-outline-secondary {
+    background: var(--neo-bg-card) !important;
+    color: var(--neo-text-main) !important;
+    border: 1px solid rgba(255, 255, 255, 0.8) !important;
+    box-shadow: 3px 3px 8px var(--neo-dark-shadow),
+                -3px -3px 8px var(--neo-light-shadow) !important;
+}
+
+.btn-secondary:hover, .btn-outline-secondary:hover {
+    background: #ffffff !important;
+    color: var(--neo-primary) !important;
+}
+
 /* Neo-skeuomorphic Tactile Buttons */
 .neo-btn {
     border-radius: 12px;
