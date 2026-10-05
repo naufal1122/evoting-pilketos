@@ -1,0 +1,176 @@
+/* ==========================================================================
+   Neo-Skeuomorphic Design System for E-Voting Pilketos
+   ========================================================================== */
+
+:root {
+    --neo-bg: #eef2f7;
+    --neo-bg-card: #f5f8fc;
+    --neo-dark-shadow: rgba(166, 178, 195, 0.45);
+    --neo-light-shadow: rgba(255, 255, 255, 0.95);
+    --neo-primary: #10b981;
+    --neo-primary-dark: #059669;
+    --neo-text-main: #1e293b;
+    --neo-text-muted: #64748b;
+}
+
+body {
+    background-color: var(--neo-bg) !important;
+    color: var(--neo-text-main);
+}
+
+/* Neo-skeuomorphic Raised Card */
+.neo-card {
+    background: var(--neo-bg-card);
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    box-shadow: 7px 7px 16px var(--neo-dark-shadow),
+                -7px -7px 16px var(--neo-light-shadow);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.neo-card-hover:hover {
+    transform: translateY(-3px);
+    box-shadow: 10px 10px 22px var(--neo-dark-shadow),
+                -10px -10px 22px var(--neo-light-shadow);
+}
+
+/* Neo-skeuomorphic Sunken / Inset Surface */
+.neo-inset {
+    background: #e9eef5 !important;
+    border: 1px solid rgba(255, 255, 255, 0.5) !important;
+    box-shadow: inset 3px 3px 6px rgba(166, 178, 195, 0.4),
+                inset -3px -3px 6px rgba(255, 255, 255, 0.85) !important;
+    border-radius: 12px;
+}
+
+/* Neo-skeuomorphic Inputs */
+.form-control.neo-input,
+.neo-input {
+    background: #e9eef5;
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    box-shadow: inset 2px 2px 5px rgba(166, 178, 195, 0.35),
+                inset -2px -2px 5px rgba(255, 255, 255, 0.8);
+    border-radius: 10px;
+    color: var(--neo-text-main);
+    padding: 10px 14px;
+    transition: all 0.2s ease;
+}
+
+.form-control.neo-input:focus {
+    background: #ffffff;
+    box-shadow: inset 1px 1px 3px rgba(16, 185, 129, 0.2),
+                0 0 0 3px rgba(16, 185, 129, 0.2);
+    border-color: #10b981;
+}
+
+/* Neo-skeuomorphic Tactile Buttons */
+.neo-btn {
+    border-radius: 12px;
+    padding: 10px 20px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    border: 1px solid rgba(255, 255, 255, 0.7);
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.neo-btn-primary {
+    background: linear-gradient(145deg, #10b981, #059669);
+    color: #ffffff !important;
+    box-shadow: 4px 4px 10px rgba(16, 185, 129, 0.35),
+                -3px -3px 8px var(--neo-light-shadow);
+}
+
+.neo-btn-primary:hover {
+    background: linear-gradient(145deg, #059669, #047857);
+    box-shadow: 6px 6px 14px rgba(16, 185, 129, 0.45),
+                -4px -4px 10px var(--neo-light-shadow);
+    color: #ffffff;
+}
+
+.neo-btn-primary:active {
+    box-shadow: inset 3px 3px 6px rgba(0, 0, 0, 0.25),
+                inset -2px -2px 5px rgba(255, 255, 255, 0.2);
+    transform: translateY(1px);
+}
+
+.neo-btn-secondary {
+    background: var(--neo-bg-card);
+    color: var(--neo-text-main);
+    box-shadow: 4px 4px 10px var(--neo-dark-shadow),
+                -4px -4px 10px var(--neo-light-shadow);
+}
+
+.neo-btn-secondary:hover {
+    color: var(--neo-primary);
+    box-shadow: 6px 6px 14px var(--neo-dark-shadow),
+                -6px -6px 14px var(--neo-light-shadow);
+}
+
+.neo-btn-secondary:active {
+    box-shadow: inset 2px 2px 5px rgba(166, 178, 195, 0.4),
+                inset -2px -2px 5px rgba(255, 255, 255, 0.8);
+    transform: translateY(1px);
+}
+
+.neo-btn-danger {
+    background: linear-gradient(145deg, #ef4444, #dc2626);
+    color: #ffffff !important;
+    box-shadow: 4px 4px 10px rgba(239, 68, 68, 0.3),
+                -3px -3px 8px var(--neo-light-shadow);
+}
+
+.neo-btn-danger:active {
+    box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.25);
+    transform: translateY(1px);
+}
+
+/* Neo-skeuomorphic Progress Bar */
+.neo-progress {
+    height: 14px;
+    background: #e2e8f0;
+    border-radius: 10px;
+    box-shadow: inset 2px 2px 4px rgba(166, 178, 195, 0.4),
+                inset -2px -2px 4px rgba(255, 255, 255, 0.8);
+    overflow: hidden;
+    padding: 2px;
+}
+
+.neo-progress-bar {
+    height: 100%;
+    border-radius: 8px;
+    background: linear-gradient(90deg, #10b981 0%, #059669 100%);
+    box-shadow: 2px 0 6px rgba(16, 185, 129, 0.4);
+    transition: width 0.6s ease;
+}
+
+/* Neo Pill Badge */
+.neo-badge {
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 11.5px;
+    font-weight: 600;
+    box-shadow: 2px 2px 5px var(--neo-dark-shadow),
+                -2px -2px 5px var(--neo-light-shadow);
+    border: 1px solid rgba(255, 255, 255, 0.7);
+}
+
+.neo-badge-success {
+    background: #d1fae5;
+    color: #065f46;
+}
+
+.neo-badge-warning {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.neo-badge-danger {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+.neo-badge-info {
+    background: #e0f2fe;
+    color: #0369a1;
+}

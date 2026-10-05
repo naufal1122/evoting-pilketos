@@ -176,5 +176,85 @@ class FeatureIntegrationTest extends TestCase
         $responseSiswa->assertDontSee('badge-dark');
         $responseSiswa->assertSee('Siswa');
     }
+
+    public function test_voting_schedule_setting_and_blocking_when_closed()
+    {
+        $admin = User::where('role', 'admin')->first();
+        $this->assertNotNull($admin);
+
+        // Update schedule to manual close
+        $response = $this->actingAs($admin)->post('/update-jadwal', [
+            'status_pemilihan' => 'tutup',
+            'waktu_mulai' => now()->subDay()->format('Y-m-d H:i'),
+            'waktu_selesai' => now()->addDay()->format('Y-m-d H:i'),
+        ]);
+        $response->assertRedirect(route('dashboard'));
+
+        $this->assertEquals('tutup', \App\Setting::get('status_pemilihan'));
+
+        // Fresh student attempting to vote while closed
+        $siswa = User::create([
+            'username' => 'siswatest_schedule',
+            'nama_panjang' => 'Siswa Test Schedule',
+            'kelas' => 'XII RPL 1',
+            'role' => 'siswa',
+            'password' => 'schedule123',
+        ]);
+        $paslon = \App\Paslon::first();
+
+        $voteResponse = $this->actingAs($siswa)->get('/pilihPaslon/' . $paslon->id, [
+            'HTTP_ACCEPT' => 'application/json',
+            'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest'
+        ]);
+
+        $voteResponse->assertStatus(422);
+        $voteResponse->assertJson(['success' => false]);
+
+        // Re-open
+        \App\Setting::set('status_pemilihan', 'buka');
+
+        // Clean up
+        $siswa->delete();
+    }
+
+    public function test_admin_dashboard_shows_class_participation_and_schedule()
+    {
+        $admin = User::where('role', 'admin')->first();
+        $this->assertNotNull($admin);
+
+        $response = $this->actingAs($admin)->get('/dashboard');
+        $response->assertStatus(200);
+        $response->assertViewHas('kelasStats');
+        $response->assertViewHas('votingSchedule');
+        $response->assertSee('Tingkat Partisipasi Pemilih per Kelas');
+        $response->assertSee('Status Waktu Pemilihan');
+        $response->assertSee('Simpan Jadwal');
+    }
+
+    public function test_live_count_projector_view_renders()
+    {
+        $admin = User::where('role', 'admin')->first();
+        $this->assertNotNull($admin);
+
+        $response = $this->actingAs($admin)->get('/live-count');
+        $response->assertStatus(200);
+        $response->assertSee('LIVE COUNT PEMILIHAN KETUA OSIS');
+        $response->assertSee('liveChart');
+        $response->assertSee('Total Daftar Pemilih (DPT)');
+    }
+
+    public function test_berita_acara_view_renders_with_official_rekap()
+    {
+        $admin = User::where('role', 'admin')->first();
+        $this->assertNotNull($admin);
+
+        $response = $this->actingAs($admin)->get('/berita-acara');
+        $response->assertStatus(200);
+        $response->assertSee('BERITA ACARA REKAPITULASI HASIL PENGHITUNGAN SUARA');
+        $response->assertSee('Pembina OSIS');
+        $response->assertSee('Ketua Panitia Pelaksana');
+        $response->assertSee('Cetak / Simpan PDF');
+    }
 }
+
 

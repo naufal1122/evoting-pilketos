@@ -52,11 +52,14 @@ Route::group(['middleware' => ['auth' => 'CekRole:admin']], function() {
     Route::get('/backup', 'AdminController@backupDatabase')->name('backup.database');
     Route::delete('/siswa/{id}','AdminController@hapusSiswa')->name('siswa.hapus');
     Route::get('/get-total-suara', 'AdminController@getTotalSuara')->name('get.total.suara');
+    Route::post('/update-jadwal', 'AdminController@updateJadwal')->name('admin.updateJadwal');
+    Route::get('/berita-acara', 'AdminController@beritaAcara')->name('admin.beritaAcara');
 });
 
 Route::group(['middleware' => ['auth' => 'CekRole:admin,siswa']], function() {
 
     Route::get('/hasilVote', 'AdminController@hasilVote');
+    Route::get('/live-count', 'AdminController@liveCount')->name('admin.liveCount');
 
 });
 

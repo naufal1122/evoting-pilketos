@@ -6,6 +6,7 @@ use App\Paslon;
 use App\Voting;
 use App\User;
 use App\HasilVoting;
+use App\Setting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth; // Pastikan mengimpor Auth
 use Illuminate\Database\QueryException; // Untuk menangani kesalahan saat query
@@ -32,10 +33,9 @@ class siswaController extends Controller
      */
     public function index()
     {
-
         $data = Paslon::all();
-        return view('siswa.home', ['data' => $data]);
-
+        $votingSchedule = Setting::getVotingStatus();
+        return view('siswa.home', compact('data', 'votingSchedule'));
     }
 
 
@@ -65,7 +65,18 @@ class siswaController extends Controller
     {
         $idUser = Auth::id();
 
-        // 1. Validasi keberadaan paslon
+        // 1. Validasi jadwal pemilihan (Fitur 1)
+        $schedule = Setting::getVotingStatus();
+        if (!$schedule['is_buka']) {
+            $msg = $schedule['pesan'];
+            if ($request->expectsJson() || $request->ajax()) {
+                return response()->json(['success' => false, 'message' => $msg], 422);
+            }
+            Alert::warning('Pemilihan Ditutup', $msg);
+            return redirect('/home');
+        }
+
+        // 2. Validasi keberadaan paslon
         $paslon = Paslon::find($id);
         if (!$paslon) {
             if ($request->expectsJson() || $request->ajax()) {
@@ -77,7 +88,7 @@ class siswaController extends Controller
 
         $noUrutPaslon = $paslon->no_urut_paslon;
 
-        // 2. Gunakan DB transaction dengan pessimistic row locking pada tabel users untuk mencegah race condition double vote
+        // 3. Gunakan DB transaction dengan pessimistic row locking pada tabel users untuk mencegah race condition double vote
         try {
             DB::transaction(function () use ($idUser, $noUrutPaslon) {
                 // Kunci baris user agar voting konkuren dari user yang sama di-serialize
@@ -89,7 +100,7 @@ class siswaController extends Controller
                     throw new \RuntimeException('ALREADY_VOTED');
                 }
 
-                // Cek apakah voting sudah ditutup
+                // Cek apakah voting sudah ditutup secara permanen
                 if (HasilVoting::count() > 0) {
                     throw new \RuntimeException('VOTING_CLOSED');
                 }
@@ -134,12 +145,18 @@ class siswaController extends Controller
             return redirect('/home');
         }
 
+        // Kiosk Mode Auto-Logout (Fitur 2)
         if ($request->expectsJson() || $request->ajax()) {
-            return response()->json(['success' => true, 'message' => 'Kamu Berhasil Memilih!']);
+            return response()->json([
+                'success' => true,
+                'message' => 'Terima kasih, kamu berhasil memilih! Sistem akan otomatis logout.',
+                'kiosk_logout' => true,
+                'auto_logout_seconds' => 3
+            ]);
         }
 
-        Alert::success('Success', 'Kamu Berhasil Memilih');
-        return redirect('/home');
+        Alert::success('Success', 'Kamu Berhasil Memilih! Sistem akan otomatis logout.');
+        return redirect('/home')->with('auto_logout', true);
     }
 
 }

@@ -8,6 +8,7 @@ use App\Exports\SiswaExport;
 use App\Paslon;
 use App\User;
 use App\Voting;
+use App\Setting;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
@@ -32,7 +33,37 @@ class AdminController extends Controller
         // Hitung total suara
         $totalSuara = Voting::count();
 
-        return view('admin.dashboard', compact('data', 'totalPaslon','siswaData', 'totalSiswa', 'totalSuara'));
+        // Statistik Partisipasi per Kelas (Fitur 3)
+        $kelasGrouped = $siswaData->groupBy(function($u) {
+            return !empty(trim($u->kelas)) ? trim($u->kelas) : 'Tanpa Kelas';
+        });
+
+        $kelasStats = [];
+        foreach ($kelasGrouped as $namaKelas => $members) {
+            $totalInKelas = $members->count();
+            $votedInKelas = $members->filter(function($u) {
+                return $u->voting !== null;
+            })->count();
+            $percentage = $totalInKelas > 0 ? round(($votedInKelas / $totalInKelas) * 100, 1) : 0;
+
+            $kelasStats[] = [
+                'kelas' => $namaKelas,
+                'total' => $totalInKelas,
+                'voted' => $votedInKelas,
+                'unvoted' => $totalInKelas - $votedInKelas,
+                'percentage' => $percentage
+            ];
+        }
+
+        // Urutkan kelas secara natural
+        usort($kelasStats, function($a, $b) {
+            return strnatcasecmp($a['kelas'], $b['kelas']);
+        });
+
+        // Pengaturan & Jadwal Pemilihan (Fitur 1)
+        $votingSchedule = Setting::getVotingStatus();
+
+        return view('admin.dashboard', compact('data', 'totalPaslon','siswaData', 'totalSiswa', 'totalSuara', 'kelasStats', 'votingSchedule'));
     }
 
     public function hapus( $id ) {
@@ -412,6 +443,89 @@ class AdminController extends Controller
     public function getTotalSuara() {
         $totalSuara = Voting::count();
         return response()->json(['total' => $totalSuara]);
+    }
+
+    /**
+     * Memperbarui pengaturan jadwal pemilihan (Fitur 1)
+     */
+    public function updateJadwal(Request $request)
+    {
+        $this->validate($request, [
+            'status_pemilihan' => 'required|in:otomatis,buka,tutup',
+            'waktu_mulai' => 'nullable|string',
+            'waktu_selesai' => 'nullable|string',
+        ]);
+
+        Setting::set('status_pemilihan', $request->status_pemilihan);
+        if ($request->has('waktu_mulai')) {
+            Setting::set('waktu_mulai', $request->waktu_mulai);
+        }
+        if ($request->has('waktu_selesai')) {
+            Setting::set('waktu_selesai', $request->waktu_selesai);
+        }
+
+        Alert::success('Berhasil', 'Pengaturan jadwal pemilihan berhasil diperbarui.');
+        return redirect()->route('dashboard');
+    }
+
+    /**
+     * Tampilan Layar Live Count Fullscreen untuk Proyektor Aula / TV Lobi (Fitur 4)
+     */
+    public function liveCount()
+    {
+        $paslons = Paslon::orderBy('no_urut_paslon', 'asc')->get();
+        $totalSuara = Voting::count();
+        $totalSiswa = User::where('role', 'siswa')->count();
+
+        $hasilVote = [];
+        foreach ($paslons as $p) {
+            $count = Voting::where('no_urut_paslon', $p->no_urut_paslon)->count();
+            $pct = $totalSuara > 0 ? round(($count / $totalSuara) * 100, 1) : 0;
+            $hasilVote[] = [
+                'id' => $p->id,
+                'no_urut_paslon' => $p->no_urut_paslon,
+                'ketua_paslon' => $p->ketua_paslon,
+                'wakil_paslon' => $p->wakil_paslon,
+                'img_ketua' => $p->img_ketua,
+                'img_wakil' => $p->img_wakil,
+                'jumlah_vote' => $count,
+                'percentage' => $pct
+            ];
+        }
+
+        $persentasePartisipasi = $totalSiswa > 0 ? round(($totalSuara / $totalSiswa) * 100, 1) : 0;
+
+        return view('admin.liveCount', compact('hasilVote', 'totalSuara', 'totalSiswa', 'persentasePartisipasi'));
+    }
+
+    /**
+     * Cetak Laporan & Berita Acara Rekapitulasi Resmi Pemilihan (Fitur 5)
+     */
+    public function beritaAcara()
+    {
+        $paslons = Paslon::orderBy('no_urut_paslon', 'asc')->get();
+        $totalSuara = Voting::count();
+        $totalSiswa = User::where('role', 'siswa')->count();
+        $golput = max(0, $totalSiswa - $totalSuara);
+        $persentasePartisipasi = $totalSiswa > 0 ? round(($totalSuara / $totalSiswa) * 100, 2) : 0;
+        $persentaseGolput = $totalSiswa > 0 ? round(($golput / $totalSiswa) * 100, 2) : 0;
+
+        $hasilVote = [];
+        foreach ($paslons as $p) {
+            $count = Voting::where('no_urut_paslon', $p->no_urut_paslon)->count();
+            $pct = $totalSuara > 0 ? round(($count / $totalSuara) * 100, 2) : 0;
+            $hasilVote[] = [
+                'no_urut_paslon' => $p->no_urut_paslon,
+                'ketua_paslon' => $p->ketua_paslon,
+                'wakil_paslon' => $p->wakil_paslon,
+                'jumlah_vote' => $count,
+                'percentage' => $pct
+            ];
+        }
+
+        $votingSchedule = Setting::getVotingStatus();
+
+        return view('admin.beritaAcara', compact('hasilVote', 'totalSuara', 'totalSiswa', 'golput', 'persentasePartisipasi', 'persentaseGolput', 'votingSchedule'));
     }
 
 }

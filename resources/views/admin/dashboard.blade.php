@@ -85,23 +85,162 @@ Dashboard
                     <hr>
                     <div class="card-body mx-auto" style="width: 100%; background-color: #fcfdfe;">
                         <div class="row mb-2">
-                            <div class="col-md-12 colBtn">
-                                <a href="#"
-                                class="btn btn-danger ml-1 btnSelesai btnpaslon float-right {{ ( count(HasilVoting::all()) >= 1 ) ? 'disabled' : '' }}"
-                                id="voteSelesaiBtn">Vote Selesai</a>
-                                <a href="/ulangVoting" class="btn btn-outline-danger ml-1 float-right btnUlang btnpaslon" id="ulangVotingBtn">Mulai Ulang Voting</a>
+                            <div class="col-md-12 colBtn d-flex flex-wrap align-items-center justify-content-between">
+                                <div class="d-flex flex-wrap gap-2 mb-2">
+                                    <a href="{{ route('admin.liveCount') }}" target="_blank" class="neo-btn neo-btn-primary mr-2 mb-1">
+                                        <i class="fas fa-desktop mr-1"></i> Layar Monitor Proyektor
+                                    </a>
+                                    <a href="{{ route('admin.beritaAcara') }}" target="_blank" class="neo-btn neo-btn-secondary mr-2 mb-1">
+                                        <i class="fas fa-file-invoice mr-1"></i> Cetak Berita Acara
+                                    </a>
+                                    <form action="{{ route('backup.database') }}" method="GET" class="d-inline mb-1 mr-2">
+                                        <button type="submit" class="neo-btn neo-btn-secondary">
+                                            <i class="fas fa-database mr-1"></i> Backup Database
+                                        </button>
+                                    </form>
+                                </div>
+                                <div class="d-flex flex-wrap gap-2 mb-2">
+                                    <a href="/ulangVoting" class="neo-btn neo-btn-secondary text-danger mr-2 mb-1" id="ulangVotingBtn">
+                                        <i class="fas fa-redo-alt mr-1"></i> Reset Voting
+                                    </a>
+                                    <a href="#"
+                                       class="neo-btn neo-btn-danger mb-1 {{ ( count(HasilVoting::all()) >= 1 ) ? 'disabled' : '' }}"
+                                       id="voteSelesaiBtn">
+                                        <i class="fas fa-lock mr-1"></i> Kunci & Selesaikan
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-                                <!-- <a href="#"
-                                class="btn btn-primary mr-1 float-left btnHasil btnpaslon"
-                                id="statusBtn">Status: Voting Online</a> -->
-
-                                <form action="{{ route('backup.database') }}" method="GET">
-                                    <button type="submit" class="btn btn-outline-primary float-left ml-1 btnHasil btnpaslon">Backup Database</button>
+                <!-- Widget Jadwal & Status Pemilihan (Fitur 1) -->
+                <div class="card neo-card mt-4 mb-4">
+                    <div class="card-header d-flex justify-content-between align-items-center" style="background: transparent; border-bottom: 1px solid rgba(0,0,0,0.06); padding: 16px 24px;">
+                        <h5 class="mb-0 font-weight-bold" style="color: #1e293b;">
+                            <i class="far fa-clock text-success mr-2"></i> Jadwal & Status Waktu Pemilihan
+                        </h5>
+                        <div>
+                            @if($votingSchedule['status'] === 'buka')
+                                <span class="neo-badge neo-badge-success">
+                                    <i class="fas fa-circle text-success mr-1" style="font-size: 8px;"></i> Pemilihan Buka (Aktif)
+                                </span>
+                            @elseif($votingSchedule['status'] === 'belum_mulai')
+                                <span class="neo-badge neo-badge-warning">
+                                    <i class="fas fa-hourglass-start text-warning mr-1"></i> Belum Dimulai
+                                </span>
+                            @else
+                                <span class="neo-badge neo-badge-danger">
+                                    <i class="fas fa-lock text-danger mr-1"></i> Pemilihan Ditutup
+                                </span>
+                            @endif
+                        </div>
+                    </div>
+                    <div class="card-body" style="padding: 24px;">
+                        <div class="row">
+                            <div class="col-lg-5 mb-3">
+                                <div class="neo-inset p-3" style="border-radius: 14px;">
+                                    <h6 class="font-weight-bold text-muted mb-2">Informasi Jadwal Saat Ini</h6>
+                                    <p class="mb-1" style="font-size: 14px;"><strong>Mode:</strong> <span class="text-capitalize">{{ $votingSchedule['mode'] }}</span></p>
+                                    <p class="mb-1" style="font-size: 14px;"><strong>Waktu Buka:</strong> {{ $votingSchedule['waktu_mulai'] ? \Carbon\Carbon::parse($votingSchedule['waktu_mulai'])->format('d M Y, H:i') . ' WIB' : 'Belum diatur' }}</p>
+                                    <p class="mb-2" style="font-size: 14px;"><strong>Waktu Tutup:</strong> {{ $votingSchedule['waktu_selesai'] ? \Carbon\Carbon::parse($votingSchedule['waktu_selesai'])->format('d M Y, H:i') . ' WIB' : 'Belum diatur' }}</p>
+                                    <div class="alert alert-light mb-0 py-2 px-3 border" style="font-size: 13px; color: #475569;">
+                                        <i class="fas fa-info-circle text-info mr-1"></i> {{ $votingSchedule['pesan'] }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-7">
+                                <form action="{{ route('admin.updateJadwal') }}" method="POST">
+                                    @csrf
+                                    <div class="row">
+                                        <div class="col-md-12 mb-3">
+                                            <label class="font-weight-bold" style="font-size: 13.5px;">Status Pemilihan</label>
+                                            <div class="d-flex flex-wrap gap-2">
+                                                <div class="custom-control custom-radio mr-3">
+                                                    <input type="radio" id="modeOtomatis" name="status_pemilihan" value="otomatis" class="custom-control-input" {{ $votingSchedule['mode'] === 'otomatis' ? 'checked' : '' }}>
+                                                    <label class="custom-control-label" for="modeOtomatis">Otomatis (Sesuai Jadwal Jam)</label>
+                                                </div>
+                                                <div class="custom-control custom-radio mr-3">
+                                                    <input type="radio" id="modeBuka" name="status_pemilihan" value="buka" class="custom-control-input" {{ $votingSchedule['mode'] === 'buka' ? 'checked' : '' }}>
+                                                    <label class="custom-control-label text-success font-weight-bold" for="modeBuka">Buka Manual</label>
+                                                </div>
+                                                <div class="custom-control custom-radio">
+                                                    <input type="radio" id="modeTutup" name="status_pemilihan" value="tutup" class="custom-control-input" {{ $votingSchedule['mode'] === 'tutup' ? 'checked' : '' }}>
+                                                    <label class="custom-control-label text-danger font-weight-bold" for="modeTutup">Tutup Manual</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label class="font-weight-bold" style="font-size: 13.5px;">Waktu Mulai Pemilihan</label>
+                                            <input type="datetime-local" name="waktu_mulai" class="form-control neo-input" value="{{ $votingSchedule['waktu_mulai'] ? \Carbon\Carbon::parse($votingSchedule['waktu_mulai'])->format('Y-m-d\TH:i') : '' }}">
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label class="font-weight-bold" style="font-size: 13.5px;">Waktu Selesai Pemilihan</label>
+                                            <input type="datetime-local" name="waktu_selesai" class="form-control neo-input" value="{{ $votingSchedule['waktu_selesai'] ? \Carbon\Carbon::parse($votingSchedule['waktu_selesai'])->format('Y-m-d\TH:i') : '' }}">
+                                        </div>
+                                        <div class="col-md-12 text-right">
+                                            <button type="submit" class="neo-btn neo-btn-primary">
+                                                <i class="fas fa-save mr-1"></i> Simpan Jadwal & Status
+                                            </button>
+                                        </div>
+                                    </div>
                                 </form>
                             </div>
                         </div>
                     </div>
                 </div>
+
+                <!-- Widget Statistik Partisipasi Berdasarkan Kelas (Fitur 3) -->
+                <div class="card neo-card mt-4 mb-5">
+                    <div class="card-header d-flex justify-content-between align-items-center" style="background: transparent; border-bottom: 1px solid rgba(0,0,0,0.06); padding: 16px 24px;">
+                        <h5 class="mb-0 font-weight-bold" style="color: #1e293b;">
+                            <i class="fas fa-chart-pie text-primary mr-2"></i> Tingkat Partisipasi Pemilih per Kelas
+                        </h5>
+                        <span class="text-muted" style="font-size: 13px;">Total {{ count($kelasStats) }} Kelas Terdaftar</span>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover mb-0" style="vertical-align: middle;">
+                                <thead>
+                                    <tr>
+                                        <th style="padding-left: 24px;">Kelas</th>
+                                        <th class="text-center">Total DPT</th>
+                                        <th class="text-center">Sudah Memilih</th>
+                                        <th class="text-center">Belum Memilih</th>
+                                        <th style="width: 35%; padding-right: 24px;">Progress Partisipasi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @forelse($kelasStats as $ks)
+                                    <tr>
+                                        <td style="padding-left: 24px; font-weight: 600; color: #1e293b;">
+                                            <i class="fas fa-graduation-cap text-muted mr-2"></i>{{ $ks['kelas'] }}
+                                        </td>
+                                        <td class="text-center">{{ $ks['total'] }}</td>
+                                        <td class="text-center font-weight-bold text-success">{{ $ks['voted'] }}</td>
+                                        <td class="text-center font-weight-bold text-muted">{{ $ks['unvoted'] }}</td>
+                                        <td style="padding-right: 24px;">
+                                            <div class="d-flex align-items-center">
+                                                <div class="neo-progress flex-grow-1 mr-2">
+                                                    <div class="neo-progress-bar" style="width: {{ $ks['percentage'] }}%;"></div>
+                                                </div>
+                                                <span class="font-weight-bold" style="font-size: 13px; width: 48px; text-align: right; color: #065f46;">
+                                                    {{ $ks['percentage'] }}%
+                                                </span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    @empty
+                                    <tr>
+                                        <td colspan="5" class="text-center text-muted py-4">Belum ada data kelas siswa yang terdaftar.</td>
+                                    </tr>
+                                    @endforelse
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
