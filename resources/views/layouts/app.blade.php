@@ -65,12 +65,12 @@
             color: #10b981;
         }
 
-        .nav-link.active {
+        .navbar .nav-link.active {
             position: relative;
             color: #059669 !important;
         }
 
-        .nav-link.active::after {
+        .navbar .nav-link.active::after {
             content: '';
             position: absolute;
             bottom: -12px;
