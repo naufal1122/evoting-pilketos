@@ -14,23 +14,21 @@ class SiswaExport implements FromCollection, WithHeadings, WithMapping
         return User::where('role', 'siswa')->get();
     }
 
-    public function map($siswa): array
-    {
-        return [
-            $siswa->username,
-            $siswa->nama_panjang ?? '',
-            $siswa->kelas ?? '',
-            $siswa->password, // Password adalah NIS siswa
-        ];
-    }
-
     public function headings(): array
     {
         return [
-            'Username',
-            'Nama Panjang',
+            'Nama Siswa',
             'Kelas',
             'NIS',
+        ];
+    }
+
+    public function map($siswa): array
+    {
+        return [
+            $siswa->nama_panjang ?? $siswa->username,
+            $siswa->kelas ?? '',
+            $siswa->password, // Password adalah NIS siswa
         ];
     }
 }

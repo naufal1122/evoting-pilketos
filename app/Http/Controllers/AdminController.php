@@ -196,22 +196,27 @@ class AdminController extends Controller
     public function prosesRegisterSiswa( Request $request ) {
 
         $this->validate($request, [
-
-            'username' => 'required',
             'nama_panjang' => 'required',
             'kelas' => 'required',
             'password' => 'required'
-
         ]);
 
-        User::create([
+        $username = $request->username;
+        if (empty($username)) {
+            $words = array_values(array_filter(explode(' ', trim($request->nama_panjang))));
+            if (count($words) >= 2) {
+                $username = strtolower(preg_replace('/[^a-zA-Z0-9]/', '', $words[0] . $words[1]));
+            } elseif (count($words) === 1) {
+                $username = strtolower(preg_replace('/[^a-zA-Z0-9]/', '', $words[0]));
+            }
+        }
 
-            'username' => $request->username,
+        User::create([
+            'username' => $username,
             'nama_panjang' => $request->nama_panjang,
             'kelas' => $request->kelas,
             'role' => 'siswa',
             'password' => $request->password
-
         ]);
 
         Alert::success('Success', 'Register Siswa Berhasil');

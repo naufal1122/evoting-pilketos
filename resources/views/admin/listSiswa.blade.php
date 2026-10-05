@@ -18,21 +18,23 @@ List Siswa
                 <div class="header">
                     <h1 class="text-white">List Siswa</h1>
                 </div>
-                <div class="card mt-3">
-                    <div class="card-body mx-auto" style="width: 95%">
+                <div class="card mt-3 shadow-sm border-0">
+                    <div class="card-body p-4">
                         <div class="col-md-12 p-0">
-                            <a href="/dashboard" class="btn btn-outline-secondary mt-2 mb-3 btnpaslon">Dashboard</a>
+                            <a href="/dashboard" class="btn btn-outline-secondary mt-2 mb-3 btnpaslon">
+                                <i class="fas fa-arrow-left mr-1"></i> Dashboard
+                            </a>
                                 <div class="dropdown float-right mt-2 mb-4">
                                     <button class="btn btnpaslon btn-success dropdown-toggle" type="button"
                                         id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
                                         aria-expanded="false">
-                                        Register Siswa
+                                        <i class="fas fa-user-plus mr-1"></i> Registrasi Siswa
                                     </button>
-                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-                                        <a href="/user/importSiswa" class="dropdown-item"><i class="fas fa-file-import text-success mr-2"></i> Import Excel</a>
-                                        <a href="{{ route('user.exportExcel') }}" class="dropdown-item"><i class="fas fa-file-export text-primary mr-2"></i> Export Siswa</a>
+                                    <div class="dropdown-menu dropdown-menu-right shadow-sm" aria-labelledby="dropdownMenuButton">
+                                        <a href="/user/importSiswa" class="dropdown-item"><i class="fas fa-file-upload text-success mr-2"></i> Import Excel</a>
+                                        <a href="{{ route('user.exportExcel') }}" class="dropdown-item"><i class="fas fa-file-download text-primary mr-2"></i> Format Upload (Template)</a>
                                         <div class="dropdown-divider"></div>
-                                        <a class="dropdown-item" href="/registerSiswa"><i class="fas fa-user-plus text-info mr-2"></i> Manual Register</a>
+                                        <a class="dropdown-item" href="/registerSiswa"><i class="fas fa-user-edit text-info mr-2"></i> Manual Register</a>
                                     </div>
                                 </div>
                                 <form method="GET" action="{{ route('listSiswa') }}" class="form-inline mb-3" id="searchForm">

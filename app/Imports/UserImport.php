@@ -22,10 +22,20 @@ class UserImport implements ToModel, WithHeadingRow
             $normalized[$cleanedKey] = is_string($value) ? trim($value) : $value;
         }
 
-        $username = $normalized['username'] ?? null;
         $namaPanjang = $normalized['nama_panjang'] ?? $normalized['nama'] ?? $normalized['nama_lengkap'] ?? null;
+        $username = $normalized['username'] ?? null;
         $kelas = $normalized['kelas'] ?? null;
         $nis = $normalized['nis'] ?? $normalized['password'] ?? null;
+
+        // Auto-generate username from the first two words of name if username is empty
+        if (empty($username) && !empty($namaPanjang)) {
+            $words = array_values(array_filter(explode(' ', trim($namaPanjang))));
+            if (count($words) >= 2) {
+                $username = strtolower(preg_replace('/[^a-zA-Z0-9]/', '', $words[0] . $words[1]));
+            } elseif (count($words) === 1) {
+                $username = strtolower(preg_replace('/[^a-zA-Z0-9]/', '', $words[0]));
+            }
+        }
 
         // Skip rows without username or nis
         if (empty($username) || empty($nis)) {

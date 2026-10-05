@@ -30,8 +30,8 @@ class FeatureIntegrationTest extends TestCase
         $mapped = $export->map($firstRow);
 
         $this->assertIsArray($mapped);
-        $this->assertCount(4, $mapped);
-        $this->assertEquals($firstRow->username, $mapped[0]);
+        $this->assertCount(3, $mapped);
+        $this->assertEquals($firstRow->nama_panjang ?? $firstRow->username, $mapped[0]);
     }
 
     public function test_siswa_import_logic()
@@ -51,6 +51,16 @@ class FeatureIntegrationTest extends TestCase
         $this->assertEquals('XII RPL 1', $model->kelas);
         $this->assertEquals('99887766', $model->password);
         $this->assertEquals('siswa', $model->role);
+
+        // Test auto-generate username from 2 words (e.g., Dewa Naufal -> dewanaufal)
+        $autoModel = $import->model([
+            'nama' => 'Dewa Naufal Pratama',
+            'kelas' => 'XII RPL 2',
+            'nis' => '11223344'
+        ]);
+        $this->assertNotNull($autoModel);
+        $this->assertEquals('dewanaufal', $autoModel->username);
+        $this->assertEquals('Dewa Naufal Pratama', $autoModel->nama_panjang);
     }
 
     public function test_user_avatar_url_attribute()
