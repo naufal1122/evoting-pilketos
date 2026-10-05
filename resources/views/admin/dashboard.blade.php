@@ -143,32 +143,6 @@ Dashboard
                                             </a>
                                         </div>
                                     </div>
-
-                                    <div class="neo-inset p-3 mt-3" style="border-radius: 14px;">
-                                        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center">
-                                            <div>
-                                                <span class="font-weight-bold text-muted" style="font-size: 13.5px;">Status Pelaksanaan Saat Ini:</span>
-                                                <span class="ml-2 font-weight-bold" style="color: #1e293b;">
-                                                    @if($votingSchedule['status'] === 'buka')
-                                                        <span class="text-success"><i class="fas fa-circle mr-1" style="font-size: 9px;"></i> Pemilihan Buka (Aktif)</span>
-                                                    @elseif($votingSchedule['status'] === 'belum_mulai')
-                                                        <span class="text-warning"><i class="fas fa-hourglass-start mr-1"></i> Belum Dimulai</span>
-                                                    @else
-                                                        <span class="text-danger"><i class="fas fa-lock mr-1"></i> Pemilihan Ditutup</span>
-                                                    @endif
-                                                </span>
-                                            </div>
-                                            <div class="mt-2 mt-md-0">
-                                                <button type="button" class="btn btn-sm btn-link text-success p-0 font-weight-bold" onclick="$('#tab-jadwal-link').tab('show')">
-                                                    Atur Jadwal TPS <i class="fas fa-arrow-right ml-1"></i>
-                                                </button>
-                                                <span class="mx-2 text-muted">|</span>
-                                                <button type="button" class="btn btn-sm btn-link text-primary p-0 font-weight-bold" onclick="$('#tab-partisipasi-link').tab('show')">
-                                                    Lihat Partisipasi Kelas <i class="fas fa-arrow-right ml-1"></i>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
 
@@ -444,14 +418,21 @@ Dashboard
     // Kontrol tombol scroll/ganti tab bergantian (Kiri - Kanan)
     const tabOrder = ['#tab-aksi-link', '#tab-jadwal-link', '#tab-partisipasi-link'];
 
+    $('#dashboardTabs a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+        $('#dashboardTabs .nav-link').removeClass('active');
+        $(e.target).addClass('active');
+    });
+
     $('#btnPrevDashboardTab').on('click', function() {
         let activeIndex = tabOrder.findIndex(selector => $(selector).hasClass('active'));
+        if (activeIndex === -1) activeIndex = 0;
         let prevIndex = (activeIndex - 1 + tabOrder.length) % tabOrder.length;
         $(tabOrder[prevIndex]).tab('show');
     });
 
     $('#btnNextDashboardTab').on('click', function() {
         let activeIndex = tabOrder.findIndex(selector => $(selector).hasClass('active'));
+        if (activeIndex === -1) activeIndex = 0;
         let nextIndex = (activeIndex + 1) % tabOrder.length;
         $(tabOrder[nextIndex]).tab('show');
     });
