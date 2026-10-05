@@ -158,14 +158,14 @@ class FeatureIntegrationTest extends TestCase
         $response->assertDontSee('bg-primary mt-n4');
     }
 
-    public function test_user_role_badges_rendered_with_dark_badge()
+    public function test_user_role_labels_rendered_simply()
     {
         $admin = User::where('role', 'admin')->first();
         $this->assertNotNull($admin);
 
         $responseAdmin = $this->actingAs($admin)->get('/dashboard');
         $responseAdmin->assertStatus(200);
-        $responseAdmin->assertSee('badge-dark');
+        $responseAdmin->assertDontSee('badge-dark');
         $responseAdmin->assertSee('Admin');
 
         $siswa = User::where('role', 'siswa')->first();
@@ -173,7 +173,7 @@ class FeatureIntegrationTest extends TestCase
 
         $responseSiswa = $this->actingAs($siswa)->get('/home');
         $responseSiswa->assertStatus(200);
-        $responseSiswa->assertSee('badge-dark');
+        $responseSiswa->assertDontSee('badge-dark');
         $responseSiswa->assertSee('Siswa');
     }
 }

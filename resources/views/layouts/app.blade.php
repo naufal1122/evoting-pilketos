@@ -177,12 +177,12 @@
                                 <div class="text-left d-flex flex-column justify-content-center" style="line-height: 1.2;">
                                 @auth
                                 @if (Auth::user()->role == 'admin')
-                                    <span style="font-weight: 700; color: #1e293b; font-size: 14px; margin-bottom: 2px;">{{ Auth::user()->username }}</span>
-                                    <div><small class="badge badge-dark px-2 py-0" style="font-size: 11px; background-color: #1e293b;">{{ ucfirst(Auth::user()->role) }}</small></div>
+                                    <span style="font-weight: 700; color: #1e293b; font-size: 14px;">{{ Auth::user()->username }}</span>
+                                    <small class="text-muted" style="font-size: 12px; font-weight: 500;">Admin</small>
                                 @endif
                                 @if (Auth::user()->role == 'siswa')
-                                    <span style="font-weight: 700; color: #1e293b; font-size: 14px; margin-bottom: 2px;">{{ !empty(Auth::user()->nama_panjang) ? Auth::user()->nama_panjang : Auth::user()->username }}</span>
-                                    <div><small class="badge badge-dark px-2 py-0" style="font-size: 11px; background-color: #1e293b;">{{ ucfirst(Auth::user()->role) }} {{ Auth::user()->kelas ? '• ' . Auth::user()->kelas : '' }}</small></div>
+                                    <span style="font-weight: 700; color: #1e293b; font-size: 14px;">{{ !empty(Auth::user()->nama_panjang) ? Auth::user()->nama_panjang : Auth::user()->username }}</span>
+                                    <small class="text-muted" style="font-size: 12px; font-weight: 500;">Siswa {{ Auth::user()->kelas ? '• ' . Auth::user()->kelas : '' }}</small>
                                 @endif
                                 @endauth
                                 </div>
