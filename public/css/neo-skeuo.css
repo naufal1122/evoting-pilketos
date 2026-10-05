@@ -174,3 +174,66 @@ body {
     background: #e0f2fe;
     color: #0369a1;
 }
+
+/* Neo Tab / Segmented Switcher */
+.neo-nav-tabs {
+    display: inline-flex;
+    background: #e2e8f0;
+    padding: 5px;
+    border-radius: 12px;
+    box-shadow: inset 2px 2px 5px rgba(166, 178, 195, 0.4),
+                inset -2px -2px 5px rgba(255, 255, 255, 0.8);
+    border: none;
+}
+
+.neo-nav-tabs .nav-link {
+    border: none;
+    border-radius: 9px;
+    padding: 8px 18px;
+    font-size: 13.5px;
+    font-weight: 600;
+    color: #64748b;
+    background: transparent;
+    transition: all 0.25s ease;
+    cursor: pointer;
+}
+
+.neo-nav-tabs .nav-link:hover {
+    color: #1e293b;
+}
+
+.neo-nav-tabs .nav-link.active {
+    background: #ffffff;
+    color: #065f46 !important;
+    box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.08),
+                -1px -1px 4px rgba(255, 255, 255, 0.9);
+}
+
+.neo-tab-arrow-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1px solid rgba(255,255,255,0.7);
+    background: #eef2f7;
+    box-shadow: 3px 3px 7px var(--neo-dark-shadow),
+                -3px -3px 7px var(--neo-light-shadow);
+    color: #475569;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.neo-tab-arrow-btn:hover {
+    background: #ffffff;
+    color: #10b981;
+    transform: scale(1.05);
+}
+
+.neo-tab-arrow-btn:active {
+    box-shadow: inset 2px 2px 4px var(--neo-dark-shadow),
+                inset -2px -2px 4px var(--neo-light-shadow);
+    transform: scale(0.96);
+}
+

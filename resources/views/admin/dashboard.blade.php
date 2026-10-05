@@ -73,170 +73,232 @@ Dashboard
         <div class="row">
             @include('sweetalert::alert')
             <div class="col-md-12 mt-2">
-                <div class="card mt-2">
-                    <div class="card-body mx-auto" style="width: 95%">
-                        <div class="row">
-                            <div class="header mt-3">
-                                <h1 class="text" style="color: #394A5F; font-size: 28px;">Selamat datang di Aplikasi E - Pilketos</h1>
-                                <p class="text" style="color: #929dab; font-size: 18px; margin-bottom: 4px;">Ini adalah halaman dashboard aplikasi e-voting pemilihan ketua OSIS di sekolah.</p>
+                <div class="card neo-card mt-2 mb-5">
+                    <!-- Card Top Header: Welcome Banner & Tab Navigation Menu -->
+                    <div class="card-header bg-transparent border-0 pt-4 px-4 pb-2">
+                        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center">
+                            <div class="mb-3 mb-md-0">
+                                <h2 class="mb-1 font-weight-bold" style="color: #1e293b; font-size: 24px;">Selamat datang di E - Pilketos</h2>
+                                <p class="text-muted mb-0" style="font-size: 14.5px;">Panel kontrol dan pusat manajemen pemilihan ketua OSIS sekolah.</p>
+                            </div>
+                            <!-- Menu Tab Bergantian (Scroll Kiri Kanan) -->
+                            <div class="d-flex align-items-center">
+                                <button type="button" class="neo-tab-arrow-btn mr-2" id="btnPrevDashboardTab" title="Sebelumnya">
+                                    <i class="fas fa-chevron-left"></i>
+                                </button>
+                                <ul class="nav neo-nav-tabs" id="dashboardTabs" role="tablist">
+                                    <li class="nav-item">
+                                        <a class="nav-link active" id="tab-aksi-link" data-toggle="tab" href="#pane-aksi" role="tab" aria-controls="pane-aksi" aria-selected="true">
+                                            <i class="fas fa-th-large mr-1 text-success"></i> Menu Utama
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="tab-jadwal-link" data-toggle="tab" href="#pane-jadwal" role="tab" aria-controls="pane-jadwal" aria-selected="false">
+                                            <i class="far fa-clock mr-1 text-info"></i> Status & Jadwal
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="tab-partisipasi-link" data-toggle="tab" href="#pane-partisipasi" role="tab" aria-controls="pane-partisipasi" aria-selected="false">
+                                            <i class="fas fa-chart-pie mr-1 text-primary"></i> Partisipasi Kelas
+                                        </a>
+                                    </li>
+                                </ul>
+                                <button type="button" class="neo-tab-arrow-btn ml-2" id="btnNextDashboardTab" title="Selanjutnya">
+                                    <i class="fas fa-chevron-right"></i>
+                                </button>
                             </div>
                         </div>
                     </div>
-                    <hr>
-                    <div class="card-body mx-auto" style="width: 100%; background-color: #fcfdfe;">
-                        <div class="row mb-2">
-                            <div class="col-md-12 colBtn d-flex flex-wrap align-items-center justify-content-between">
-                                <div class="d-flex flex-wrap gap-2 mb-2">
-                                    <a href="{{ route('admin.liveCount') }}" target="_blank" class="neo-btn neo-btn-primary mr-2 mb-1">
-                                        <i class="fas fa-desktop mr-1"></i> Layar Monitor Proyektor
-                                    </a>
-                                    <a href="{{ route('admin.beritaAcara') }}" target="_blank" class="neo-btn neo-btn-secondary mr-2 mb-1">
-                                        <i class="fas fa-file-invoice mr-1"></i> Cetak Berita Acara
-                                    </a>
-                                    <form action="{{ route('backup.database') }}" method="GET" class="d-inline mb-1 mr-2">
-                                        <button type="submit" class="neo-btn neo-btn-secondary">
-                                            <i class="fas fa-database mr-1"></i> Backup Database
-                                        </button>
-                                    </form>
-                                </div>
-                                <div class="d-flex flex-wrap gap-2 mb-2">
-                                    <a href="/ulangVoting" class="neo-btn neo-btn-secondary text-danger mr-2 mb-1" id="ulangVotingBtn">
-                                        <i class="fas fa-redo-alt mr-1"></i> Reset Voting
-                                    </a>
-                                    <a href="#"
-                                       class="neo-btn neo-btn-danger mb-1 {{ ( count(HasilVoting::all()) >= 1 ) ? 'disabled' : '' }}"
-                                       id="voteSelesaiBtn">
-                                        <i class="fas fa-lock mr-1"></i> Kunci & Selesaikan
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
 
-                <!-- Widget Jadwal & Status Pemilihan (Fitur 1) -->
-                <div class="card neo-card mt-4 mb-4">
-                    <div class="card-header d-flex justify-content-between align-items-center" style="background: transparent; border-bottom: 1px solid rgba(0,0,0,0.06); padding: 16px 24px;">
-                        <h5 class="mb-0 font-weight-bold" style="color: #1e293b;">
-                            <i class="far fa-clock text-success mr-2"></i> Jadwal & Status Waktu Pemilihan
-                        </h5>
-                        <div>
-                            @if($votingSchedule['status'] === 'buka')
-                                <span class="neo-badge neo-badge-success">
-                                    <i class="fas fa-circle text-success mr-1" style="font-size: 8px;"></i> Pemilihan Buka (Aktif)
-                                </span>
-                            @elseif($votingSchedule['status'] === 'belum_mulai')
-                                <span class="neo-badge neo-badge-warning">
-                                    <i class="fas fa-hourglass-start text-warning mr-1"></i> Belum Dimulai
-                                </span>
-                            @else
-                                <span class="neo-badge neo-badge-danger">
-                                    <i class="fas fa-lock text-danger mr-1"></i> Pemilihan Ditutup
-                                </span>
-                            @endif
-                        </div>
-                    </div>
-                    <div class="card-body" style="padding: 24px;">
-                        <div class="row">
-                            <div class="col-lg-5 mb-3">
-                                <div class="neo-inset p-3" style="border-radius: 14px;">
-                                    <h6 class="font-weight-bold text-muted mb-2">Informasi Jadwal Saat Ini</h6>
-                                    <p class="mb-1" style="font-size: 14px;"><strong>Mode:</strong> <span class="text-capitalize">{{ $votingSchedule['mode'] }}</span></p>
-                                    <p class="mb-1" style="font-size: 14px;"><strong>Waktu Buka:</strong> {{ $votingSchedule['waktu_mulai'] ? \Carbon\Carbon::parse($votingSchedule['waktu_mulai'])->format('d M Y, H:i') . ' WIB' : 'Belum diatur' }}</p>
-                                    <p class="mb-2" style="font-size: 14px;"><strong>Waktu Tutup:</strong> {{ $votingSchedule['waktu_selesai'] ? \Carbon\Carbon::parse($votingSchedule['waktu_selesai'])->format('d M Y, H:i') . ' WIB' : 'Belum diatur' }}</p>
-                                    <div class="alert alert-light mb-0 py-2 px-3 border" style="font-size: 13px; color: #475569;">
-                                        <i class="fas fa-info-circle text-info mr-1"></i> {{ $votingSchedule['pesan'] }}
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-7">
-                                <form action="{{ route('admin.updateJadwal') }}" method="POST">
-                                    @csrf
-                                    <div class="row">
-                                        <div class="col-md-12 mb-3">
-                                            <label class="font-weight-bold" style="font-size: 13.5px;">Status Pemilihan</label>
-                                            <div class="d-flex flex-wrap gap-2">
-                                                <div class="custom-control custom-radio mr-3">
-                                                    <input type="radio" id="modeOtomatis" name="status_pemilihan" value="otomatis" class="custom-control-input" {{ $votingSchedule['mode'] === 'otomatis' ? 'checked' : '' }}>
-                                                    <label class="custom-control-label" for="modeOtomatis">Otomatis (Sesuai Jadwal Jam)</label>
-                                                </div>
-                                                <div class="custom-control custom-radio mr-3">
-                                                    <input type="radio" id="modeBuka" name="status_pemilihan" value="buka" class="custom-control-input" {{ $votingSchedule['mode'] === 'buka' ? 'checked' : '' }}>
-                                                    <label class="custom-control-label text-success font-weight-bold" for="modeBuka">Buka Manual</label>
-                                                </div>
-                                                <div class="custom-control custom-radio">
-                                                    <input type="radio" id="modeTutup" name="status_pemilihan" value="tutup" class="custom-control-input" {{ $votingSchedule['mode'] === 'tutup' ? 'checked' : '' }}>
-                                                    <label class="custom-control-label text-danger font-weight-bold" for="modeTutup">Tutup Manual</label>
-                                                </div>
-                                            </div>
+                    <hr class="my-2" style="border-top: 1px solid rgba(0,0,0,0.06);">
+
+                    <!-- Content Body Panes -->
+                    <div class="card-body px-4 py-3">
+                        <div class="tab-content" id="dashboardTabsContent">
+                            <!-- TAB 1: Menu Utama / Tombol Aksi Cepat -->
+                            <div class="tab-pane fade show active" id="pane-aksi" role="tabpanel" aria-labelledby="tab-aksi-link">
+                                <div class="p-2">
+                                    <div class="d-flex flex-wrap align-items-center justify-content-between">
+                                        <div class="d-flex flex-wrap gap-2 mb-2">
+                                            <a href="{{ route('admin.liveCount') }}" target="_blank" class="neo-btn neo-btn-primary mr-2 mb-2">
+                                                <i class="fas fa-desktop mr-1"></i> Layar Monitor Proyektor
+                                            </a>
+                                            <a href="{{ route('admin.beritaAcara') }}" target="_blank" class="neo-btn neo-btn-secondary mr-2 mb-2">
+                                                <i class="fas fa-file-invoice mr-1"></i> Cetak Berita Acara
+                                            </a>
+                                            <form action="{{ route('backup.database') }}" method="GET" class="d-inline mb-2 mr-2">
+                                                <button type="submit" class="neo-btn neo-btn-secondary">
+                                                    <i class="fas fa-database mr-1"></i> Backup Database
+                                                </button>
+                                            </form>
                                         </div>
-                                        <div class="col-md-6 mb-3">
-                                            <label class="font-weight-bold" style="font-size: 13.5px;">Waktu Mulai Pemilihan</label>
-                                            <input type="datetime-local" name="waktu_mulai" class="form-control neo-input" value="{{ $votingSchedule['waktu_mulai'] ? \Carbon\Carbon::parse($votingSchedule['waktu_mulai'])->format('Y-m-d\TH:i') : '' }}">
-                                        </div>
-                                        <div class="col-md-6 mb-3">
-                                            <label class="font-weight-bold" style="font-size: 13.5px;">Waktu Selesai Pemilihan</label>
-                                            <input type="datetime-local" name="waktu_selesai" class="form-control neo-input" value="{{ $votingSchedule['waktu_selesai'] ? \Carbon\Carbon::parse($votingSchedule['waktu_selesai'])->format('Y-m-d\TH:i') : '' }}">
-                                        </div>
-                                        <div class="col-md-12 text-right">
-                                            <button type="submit" class="neo-btn neo-btn-primary">
-                                                <i class="fas fa-save mr-1"></i> Simpan Jadwal & Status
-                                            </button>
+                                        <div class="d-flex flex-wrap gap-2 mb-2">
+                                            <a href="/ulangVoting" class="neo-btn neo-btn-secondary text-danger mr-2 mb-2" id="ulangVotingBtn">
+                                                <i class="fas fa-redo-alt mr-1"></i> Reset Voting
+                                            </a>
+                                            <a href="#"
+                                               class="neo-btn neo-btn-danger mb-2 {{ ( count(HasilVoting::all()) >= 1 ) ? 'disabled' : '' }}"
+                                               id="voteSelesaiBtn">
+                                                <i class="fas fa-lock mr-1"></i> Kunci & Selesaikan
+                                            </a>
                                         </div>
                                     </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
 
-                <!-- Widget Statistik Partisipasi Berdasarkan Kelas (Fitur 3) -->
-                <div class="card neo-card mt-4 mb-5">
-                    <div class="card-header d-flex justify-content-between align-items-center" style="background: transparent; border-bottom: 1px solid rgba(0,0,0,0.06); padding: 16px 24px;">
-                        <h5 class="mb-0 font-weight-bold" style="color: #1e293b;">
-                            <i class="fas fa-chart-pie text-primary mr-2"></i> Tingkat Partisipasi Pemilih per Kelas
-                        </h5>
-                        <span class="text-muted" style="font-size: 13px;">Total {{ count($kelasStats) }} Kelas Terdaftar</span>
-                    </div>
-                    <div class="card-body p-0">
-                        <div class="table-responsive">
-                            <table class="table table-hover mb-0" style="vertical-align: middle;">
-                                <thead>
-                                    <tr>
-                                        <th style="padding-left: 24px;">Kelas</th>
-                                        <th class="text-center">Total DPT</th>
-                                        <th class="text-center">Sudah Memilih</th>
-                                        <th class="text-center">Belum Memilih</th>
-                                        <th style="width: 35%; padding-right: 24px;">Progress Partisipasi</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @forelse($kelasStats as $ks)
-                                    <tr>
-                                        <td style="padding-left: 24px; font-weight: 600; color: #1e293b;">
-                                            <i class="fas fa-graduation-cap text-muted mr-2"></i>{{ $ks['kelas'] }}
-                                        </td>
-                                        <td class="text-center">{{ $ks['total'] }}</td>
-                                        <td class="text-center font-weight-bold text-success">{{ $ks['voted'] }}</td>
-                                        <td class="text-center font-weight-bold text-muted">{{ $ks['unvoted'] }}</td>
-                                        <td style="padding-right: 24px;">
-                                            <div class="d-flex align-items-center">
-                                                <div class="neo-progress flex-grow-1 mr-2">
-                                                    <div class="neo-progress-bar" style="width: {{ $ks['percentage'] }}%;"></div>
-                                                </div>
-                                                <span class="font-weight-bold" style="font-size: 13px; width: 48px; text-align: right; color: #065f46;">
-                                                    {{ $ks['percentage'] }}%
+                                    <div class="neo-inset p-3 mt-3" style="border-radius: 14px;">
+                                        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center">
+                                            <div>
+                                                <span class="font-weight-bold text-muted" style="font-size: 13.5px;">Status Pelaksanaan Saat Ini:</span>
+                                                <span class="ml-2 font-weight-bold" style="color: #1e293b;">
+                                                    @if($votingSchedule['status'] === 'buka')
+                                                        <span class="text-success"><i class="fas fa-circle mr-1" style="font-size: 9px;"></i> Pemilihan Buka (Aktif)</span>
+                                                    @elseif($votingSchedule['status'] === 'belum_mulai')
+                                                        <span class="text-warning"><i class="fas fa-hourglass-start mr-1"></i> Belum Dimulai</span>
+                                                    @else
+                                                        <span class="text-danger"><i class="fas fa-lock mr-1"></i> Pemilihan Ditutup</span>
+                                                    @endif
                                                 </span>
                                             </div>
-                                        </td>
-                                    </tr>
-                                    @empty
-                                    <tr>
-                                        <td colspan="5" class="text-center text-muted py-4">Belum ada data kelas siswa yang terdaftar.</td>
-                                    </tr>
-                                    @endforelse
-                                </tbody>
-                            </table>
+                                            <div class="mt-2 mt-md-0">
+                                                <button type="button" class="btn btn-sm btn-link text-success p-0 font-weight-bold" onclick="$('#tab-jadwal-link').tab('show')">
+                                                    Atur Jadwal TPS <i class="fas fa-arrow-right ml-1"></i>
+                                                </button>
+                                                <span class="mx-2 text-muted">|</span>
+                                                <button type="button" class="btn btn-sm btn-link text-primary p-0 font-weight-bold" onclick="$('#tab-partisipasi-link').tab('show')">
+                                                    Lihat Partisipasi Kelas <i class="fas fa-arrow-right ml-1"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- TAB 2: Status & Jadwal Pemilihan -->
+                            <div class="tab-pane fade" id="pane-jadwal" role="tabpanel" aria-labelledby="tab-jadwal-link">
+                                <div class="p-2">
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <h5 class="font-weight-bold mb-0" style="color: #1e293b;">
+                                            <i class="far fa-clock text-success mr-2"></i> Jadwal & Status Waktu Pemilihan
+                                        </h5>
+                                        <div>
+                                            @if($votingSchedule['status'] === 'buka')
+                                                <span class="neo-badge neo-badge-success">
+                                                    <i class="fas fa-circle text-success mr-1" style="font-size: 8px;"></i> Pemilihan Buka (Aktif)
+                                                </span>
+                                            @elseif($votingSchedule['status'] === 'belum_mulai')
+                                                <span class="neo-badge neo-badge-warning">
+                                                    <i class="fas fa-hourglass-start text-warning mr-1"></i> Belum Dimulai
+                                                </span>
+                                            @else
+                                                <span class="neo-badge neo-badge-danger">
+                                                    <i class="fas fa-lock text-danger mr-1"></i> Pemilihan Ditutup
+                                                </span>
+                                            @endif
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-lg-5 mb-3">
+                                            <div class="neo-inset p-3" style="border-radius: 14px; height: 100%;">
+                                                <h6 class="font-weight-bold text-muted mb-2">Informasi Jadwal Saat Ini</h6>
+                                                <p class="mb-1" style="font-size: 14px;"><strong>Mode:</strong> <span class="text-capitalize">{{ $votingSchedule['mode'] }}</span></p>
+                                                <p class="mb-1" style="font-size: 14px;"><strong>Waktu Buka:</strong> {{ $votingSchedule['waktu_mulai'] ? \Carbon\Carbon::parse($votingSchedule['waktu_mulai'])->format('d M Y, H:i') . ' WIB' : 'Belum diatur' }}</p>
+                                                <p class="mb-2" style="font-size: 14px;"><strong>Waktu Tutup:</strong> {{ $votingSchedule['waktu_selesai'] ? \Carbon\Carbon::parse($votingSchedule['waktu_selesai'])->format('d M Y, H:i') . ' WIB' : 'Belum diatur' }}</p>
+                                                <div class="alert alert-light mb-0 py-2 px-3 border" style="font-size: 13px; color: #475569;">
+                                                    <i class="fas fa-info-circle text-info mr-1"></i> {{ $votingSchedule['pesan'] }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-7">
+                                            <form action="{{ route('admin.updateJadwal') }}" method="POST">
+                                                @csrf
+                                                <div class="row">
+                                                    <div class="col-md-12 mb-3">
+                                                        <label class="font-weight-bold" style="font-size: 13.5px;">Status Pemilihan</label>
+                                                        <div class="d-flex flex-wrap gap-2">
+                                                            <div class="custom-control custom-radio mr-3">
+                                                                <input type="radio" id="modeOtomatis" name="status_pemilihan" value="otomatis" class="custom-control-input" {{ $votingSchedule['mode'] === 'otomatis' ? 'checked' : '' }}>
+                                                                <label class="custom-control-label" for="modeOtomatis">Otomatis (Sesuai Jadwal Jam)</label>
+                                                            </div>
+                                                            <div class="custom-control custom-radio mr-3">
+                                                                <input type="radio" id="modeBuka" name="status_pemilihan" value="buka" class="custom-control-input" {{ $votingSchedule['mode'] === 'buka' ? 'checked' : '' }}>
+                                                                <label class="custom-control-label text-success font-weight-bold" for="modeBuka">Buka Manual</label>
+                                                            </div>
+                                                            <div class="custom-control custom-radio">
+                                                                <input type="radio" id="modeTutup" name="status_pemilihan" value="tutup" class="custom-control-input" {{ $votingSchedule['mode'] === 'tutup' ? 'checked' : '' }}>
+                                                                <label class="custom-control-label text-danger font-weight-bold" for="modeTutup">Tutup Manual</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6 mb-3">
+                                                        <label class="font-weight-bold" style="font-size: 13.5px;">Waktu Mulai Pemilihan</label>
+                                                        <input type="datetime-local" name="waktu_mulai" class="form-control neo-input" value="{{ $votingSchedule['waktu_mulai'] ? \Carbon\Carbon::parse($votingSchedule['waktu_mulai'])->format('Y-m-d\TH:i') : '' }}">
+                                                    </div>
+                                                    <div class="col-md-6 mb-3">
+                                                        <label class="font-weight-bold" style="font-size: 13.5px;">Waktu Selesai Pemilihan</label>
+                                                        <input type="datetime-local" name="waktu_selesai" class="form-control neo-input" value="{{ $votingSchedule['waktu_selesai'] ? \Carbon\Carbon::parse($votingSchedule['waktu_selesai'])->format('Y-m-d\TH:i') : '' }}">
+                                                    </div>
+                                                    <div class="col-md-12 text-right">
+                                                        <button type="submit" class="neo-btn neo-btn-primary">
+                                                            <i class="fas fa-save mr-1"></i> Simpan Jadwal & Status
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- TAB 3: Statistik Partisipasi Kelas -->
+                            <div class="tab-pane fade" id="pane-partisipasi" role="tabpanel" aria-labelledby="tab-partisipasi-link">
+                                <div class="p-2">
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <h5 class="font-weight-bold mb-0" style="color: #1e293b;">
+                                            <i class="fas fa-chart-pie text-primary mr-2"></i> Tingkat Partisipasi Pemilih per Kelas
+                                        </h5>
+                                        <span class="text-muted" style="font-size: 13px;">Total {{ count($kelasStats) }} Kelas Terdaftar</span>
+                                    </div>
+                                    <div class="table-responsive neo-inset p-2" style="border-radius: 14px;">
+                                        <table class="table table-hover mb-0 bg-transparent" style="vertical-align: middle;">
+                                            <thead>
+                                                <tr>
+                                                    <th style="padding-left: 20px;">Kelas</th>
+                                                    <th class="text-center">Total DPT</th>
+                                                    <th class="text-center">Sudah Memilih</th>
+                                                    <th class="text-center">Belum Memilih</th>
+                                                    <th style="width: 35%; padding-right: 20px;">Progress Partisipasi</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @forelse($kelasStats as $ks)
+                                                <tr>
+                                                    <td style="padding-left: 20px; font-weight: 600; color: #1e293b;">
+                                                        <i class="fas fa-graduation-cap text-muted mr-2"></i>{{ $ks['kelas'] }}
+                                                    </td>
+                                                    <td class="text-center">{{ $ks['total'] }}</td>
+                                                    <td class="text-center font-weight-bold text-success">{{ $ks['voted'] }}</td>
+                                                    <td class="text-center font-weight-bold text-muted">{{ $ks['unvoted'] }}</td>
+                                                    <td style="padding-right: 20px;">
+                                                        <div class="d-flex align-items-center">
+                                                            <div class="neo-progress flex-grow-1 mr-2">
+                                                                <div class="neo-progress-bar" style="width: {{ $ks['percentage'] }}%;"></div>
+                                                            </div>
+                                                            <span class="font-weight-bold" style="font-size: 13px; width: 48px; text-align: right; color: #065f46;">
+                                                                {{ $ks['percentage'] }}%
+                                                            </span>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                @empty
+                                                <tr>
+                                                    <td colspan="5" class="text-center text-muted py-4">Belum ada data kelas siswa yang terdaftar.</td>
+                                                </tr>
+                                                @endforelse
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -378,6 +440,21 @@ Dashboard
     // document.addEventListener("DOMContentLoaded", function() {
     //     showSweetAlertCountdown();
     // });
+
+    // Kontrol tombol scroll/ganti tab bergantian (Kiri - Kanan)
+    const tabOrder = ['#tab-aksi-link', '#tab-jadwal-link', '#tab-partisipasi-link'];
+
+    $('#btnPrevDashboardTab').on('click', function() {
+        let activeIndex = tabOrder.findIndex(selector => $(selector).hasClass('active'));
+        let prevIndex = (activeIndex - 1 + tabOrder.length) % tabOrder.length;
+        $(tabOrder[prevIndex]).tab('show');
+    });
+
+    $('#btnNextDashboardTab').on('click', function() {
+        let activeIndex = tabOrder.findIndex(selector => $(selector).hasClass('active'));
+        let nextIndex = (activeIndex + 1) % tabOrder.length;
+        $(tabOrder[nextIndex]).tab('show');
+    });
 
 </script>
 
