@@ -94,36 +94,29 @@ class AdminController extends Controller
     public function prosesTambah( Request $request ) {
 
         $this->validate($request, [
-
             'no_urut_paslon' => 'required|integer|unique:tbl_paslon,no_urut_paslon',
             'ketua_paslon' => 'required',
-            // 'wakil_paslon' => 'required',
             'visi_paslon' => 'required',
             'misi_paslon' => 'required',
-            'img_ketua' => 'required|max:2000|file|mimes:jpg,png,jpeg|image',
-            // 'img_wakil' => 'required|max:2000|file|mimes:jpg,png,jpeg|image'
-
+            'img_ketua' => 'required|max:5000|file|image',
         ]);
 
         $imgKetua = $request->file('img_ketua');
-        // $imgWakil = $request->file('img_wakil');
+        $namaFileKetua = time() . '_' . preg_replace('/[^a-zA-Z0-9._-]/', '_', $imgKetua->getClientOriginalName());
+        $folderKetua = public_path('img_ketua');
 
-        $namaFileKetua = time() . '_' . $imgKetua->getClientOriginalName();
-        // $namaFileWakil = time() . '_' . $imgWakil->getClientOriginalName();
-
-        $folderKetua = 'img_ketua';
-        // $folderWakil = 'img_wakil';
+        if (!file_exists($folderKetua)) {
+            mkdir($folderKetua, 0755, true);
+        }
 
         Paslon::create([
-
             'no_urut_paslon' => $request->no_urut_paslon,
             'ketua_paslon' => $request->ketua_paslon,
-            // 'wakil_paslon' => $request->wakil_paslon,
+            'wakil_paslon' => $request->wakil_paslon ?? '-',
             'visi_paslon' => $request->visi_paslon,
             'misi_paslon' => $request->misi_paslon,
             'img_ketua' => $namaFileKetua,
-            // 'img_wakil' => $namaFileWakil
-
+            'img_wakil' => null,
         ]);
 
         $imgKetua->move($folderKetua, $namaFileKetua);

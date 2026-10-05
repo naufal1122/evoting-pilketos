@@ -1,37 +1,49 @@
 function previewImage() {
+    var fileKetuaEl = document.getElementById('gambarKetua');
+    var fileWakilEl = document.getElementById('gambarWakil');
 
-    var fileKetua = document.getElementById('gambarKetua').files;
-    var fileWakil = document.getElementById('gambarWakil').files;
+    if (fileKetuaEl && fileKetuaEl.files && fileKetuaEl.files.length > 0) {
+        var fileKetua = fileKetuaEl.files[0];
+        var fileReaderKetua = new FileReader();
 
-    if (fileKetua.length > 0) {
-
-        var fileReader = new FileReader();
-
-        fileReader.onload = function (event) {
-
+        fileReaderKetua.onload = function (event) {
             var filename = document.getElementById('filenameKetua');
-            filename.innerHTML = fileKetua[0].name;
+            if (filename) {
+                filename.innerHTML = fileKetua.name;
+            }
 
+            var previewKetua = document.getElementById('previewKetua');
+            if (previewKetua) {
+                previewKetua.src = event.target.result;
+            }
+
+            var previewContainer = document.getElementById('previewKetuaContainer');
+            if (previewContainer) {
+                previewContainer.style.display = 'block';
+            }
         };
 
-        fileReader.readAsDataURL(fileKetua[0]);
-
-    }if (fileWakil.length > 0) {
-
-        var fileReader = new FileReader();
-
-        fileReader.onload = function (event) {
-
-            var filename = document.getElementById('filenameWakil');
-            filename.innerHTML = fileWakil[0].name;
-
-        };
-
-        fileReader.readAsDataURL(fileWakil[0]);
-
+        fileReaderKetua.readAsDataURL(fileKetua);
     }
 
+    if (fileWakilEl && fileWakilEl.files && fileWakilEl.files.length > 0) {
+        var fileWakil = fileWakilEl.files[0];
+        var fileReaderWakil = new FileReader();
 
+        fileReaderWakil.onload = function (event) {
+            var filename = document.getElementById('filenameWakil');
+            if (filename) {
+                filename.innerHTML = fileWakil.name;
+            }
+
+            var previewWakil = document.getElementById('previewWakil');
+            if (previewWakil) {
+                previewWakil.src = event.target.result;
+            }
+        };
+
+        fileReaderWakil.readAsDataURL(fileWakil);
+    }
 }
 
 function previewFile() {

@@ -101,21 +101,25 @@
                             <div class="row mt-3 rowInput">
                                 <div class="col-md-6">
                                     <label for="gambarKetua">Gambar Ketua</label>
-                                    <div class="input-group mb-3">
+                                    <div class="input-group mb-2">
                                         <div class="custom-file">
                                             <input type="file" class="custom-file-input" id="gambarKetua"
                                                 aria-describedby="inputGroupFileAddon01" name="img_ketua"
-                                                value="{{ old('img_ketua') }}" onchange="previewImage()" required>
+                                                value="{{ old('img_ketua') }}" onchange="previewImage()" required accept="image/*">
                                             <label class="custom-file-label d-flex" id="label" for="gambarKetua">
                                                 <p id="filenameKetua">Choose file</p>
                                             </label>
                                         </div>
                                     </div>
                                     @if( $errors->has('img_ketua') )
-                                    <div class="text-danger mt-n2">
+                                    <div class="text-danger mb-2">
                                         {{ $errors->first('img_ketua') }}
                                     </div>
                                     @endif
+                                    <!-- Preview Gambar Ketua -->
+                                    <div id="previewKetuaContainer" class="mt-2 text-center" style="display: none;">
+                                        <img id="previewKetua" src="" alt="Preview Gambar Ketua" style="max-height: 180px; width: auto; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.15); border: 2px solid #e2e8f0;">
+                                    </div>
                                 </div>
                                 <!-- <div class="col-md-6">
                                     <label for="gambarWakil">Gambar Wakil</label>

@@ -255,6 +255,32 @@ class FeatureIntegrationTest extends TestCase
         $response->assertSee('Ketua Panitia Pelaksana');
         $response->assertSee('Cetak / Simpan PDF');
     }
+
+    public function test_admin_can_upload_paslon_without_wakil()
+    {
+        $admin = User::where('role', 'admin')->first();
+        $this->assertNotNull($admin);
+
+        \Illuminate\Support\Facades\Storage::fake('public');
+        $fakeImage = \Illuminate\Http\UploadedFile::fake()->image('hatsune_miku.png');
+
+        $maxNoUrut = (int) (\App\Paslon::max('no_urut_paslon') ?? 0) + 1;
+
+        $response = $this->actingAs($admin)->post('/proses_tambah', [
+            'no_urut_paslon' => $maxNoUrut,
+            'ketua_paslon' => 'Hatsune Miku',
+            'visi_paslon' => 'Mewujudkan OSIS yang kreatif',
+            'misi_paslon' => 'Misi ceria dan berprestasi',
+            'img_ketua' => $fakeImage,
+        ]);
+
+        $response->assertRedirect(route('dashboard'));
+
+        $this->assertDatabaseHas('tbl_paslon', [
+            'no_urut_paslon' => $maxNoUrut,
+            'ketua_paslon' => 'Hatsune Miku',
+        ]);
+    }
 }
 
 
