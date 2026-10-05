@@ -7,19 +7,25 @@ use App\HasilVoting;
 
 <style>
     .responsive-img {
-        width: 110px; /* Ukuran untuk desktop */
-        height: 110px; /* Ukuran untuk desktop */
+        width: 175px; /* Ukuran lebih besar dan proporsional untuk desktop */
+        height: 175px;
         object-fit: cover;
         border-radius: 50%;
-        margin: 0 auto; /* Agar gambar terletak di tengah */
+        margin: 0 auto;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12), 0 3px 6px rgba(0, 0, 0, 0.06);
+        transition: transform 0.3s ease;
     }
 
-    @media (max-width: 768px) { /* Gaya untuk tablet dan perangkat lebih kecil */
+    .responsive-img:hover {
+        transform: scale(1.04);
+    }
+
+    @media (max-width: 768px) {
         .responsive-img {
-            width: 100%; /* Ukuran untuk tablet */
-            height: 100%; /* Ukuran untuk tablet */
-            max-width: 180px; /* Sesuaikan maksimal untuk tablet */
-            max-height: 180px; /* Sesuaikan maksimal untuk tablet */
+            width: 160px;
+            height: 160px;
+            max-width: 190px;
+            max-height: 190px;
         }
     }
 </style>
@@ -87,12 +93,12 @@ Pemilihan
                             <span class="font-weight-bold text-white text-uppercase" style="letter-spacing: 0.5px; font-size: 13px;">Calon Ketua OSIS</span>
                             <span class="badge badge-light font-weight-bold px-3 py-1" style="font-size: 13.5px; border-radius: 20px; color: #065f46;">No. Urut {{ $d->no_urut_paslon }}</span>
                         </div>
-                        <div class="card-body d-flex flex-column justify-content-center text-center p-4">
+                        <div class="card-body d-flex flex-column justify-content-center text-center py-4 px-3">
                             <img src="/img_ketua/{{ $d->img_ketua }}" class="responsive-img mb-3" loading="lazy" alt="{{ $d->alt_text }}">
 
-                            <div class="nama">
-                                <h3 class="font-weight-bold mb-1" style="font-size: 20px; color: #1e293b;">{{ $d->ketua_paslon }}</h3>
-                                <p class="text-muted mb-0" style="font-size: 13.5px;">Wakil: <strong>{{ !empty($d->wakil_paslon) ? $d->wakil_paslon : '-' }}</strong></p>
+                            <div class="nama mt-2">
+                                <h3 class="font-weight-bold mb-1" style="font-size: 24px; color: #1e293b; letter-spacing: -0.3px;">{{ $d->ketua_paslon }}</h3>
+                                <p class="text-muted mb-0" style="font-size: 15px;">Wakil: <strong style="color: #334155;">{{ !empty($d->wakil_paslon) ? $d->wakil_paslon : '-' }}</strong></p>
                             </div>
                         </div>
 
