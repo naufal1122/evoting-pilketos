@@ -8,7 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Times+New+Roman&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    <link rel="icon" href="{{ asset('/img/logosss.png') }}" type="image/x-icon">
+    <link rel="icon" href="{{ asset('/img/logoss.png') }}" type="image/x-icon">
 
     <style>
         body {

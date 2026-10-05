@@ -10,7 +10,7 @@
     <!-- Bootstrap -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('css/neo-skeuo.css') }}" rel="stylesheet">
-    <link rel="icon" href="{{ asset('/img/logosss.png') }}" type="image/x-icon">
+    <link rel="icon" href="{{ asset('/img/logoss.png') }}" type="image/x-icon">
 
     <style>
         body {
