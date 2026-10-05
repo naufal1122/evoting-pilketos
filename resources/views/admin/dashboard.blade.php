@@ -117,27 +117,27 @@ Dashboard
                         <div class="tab-content" id="dashboardTabsContent">
                             <!-- TAB 1: Menu Utama / Tombol Aksi Cepat -->
                             <div class="tab-pane fade show active" id="pane-aksi" role="tabpanel" aria-labelledby="tab-aksi-link">
-                                <div class="py-3 px-2">
-                                    <div class="d-flex flex-wrap align-items-center justify-content-between my-2">
+                                <div class="p-2">
+                                    <div class="d-flex flex-wrap align-items-center justify-content-between">
                                         <div class="d-flex flex-wrap gap-2 mb-2">
-                                            <a href="{{ route('admin.liveCount') }}" target="_blank" class="neo-btn neo-btn-primary mr-3 mb-2">
+                                            <a href="{{ route('admin.liveCount') }}" target="_blank" class="neo-btn neo-btn-primary mr-2 mb-1">
                                                 <i class="fas fa-desktop mr-1"></i> Layar Monitor Proyektor
                                             </a>
-                                            <a href="{{ route('admin.beritaAcara') }}" target="_blank" class="neo-btn neo-btn-secondary mr-3 mb-2">
+                                            <a href="{{ route('admin.beritaAcara') }}" target="_blank" class="neo-btn neo-btn-secondary mr-2 mb-1">
                                                 <i class="fas fa-file-invoice mr-1"></i> Cetak Berita Acara
                                             </a>
-                                            <form action="{{ route('backup.database') }}" method="GET" class="d-inline mb-2 mr-2">
+                                            <form action="{{ route('backup.database') }}" method="GET" class="d-inline mb-1 mr-2">
                                                 <button type="submit" class="neo-btn neo-btn-secondary">
                                                     <i class="fas fa-database mr-1"></i> Backup Database
                                                 </button>
                                             </form>
                                         </div>
                                         <div class="d-flex flex-wrap gap-2 mb-2">
-                                            <a href="/ulangVoting" class="neo-btn neo-btn-secondary text-danger mr-3 mb-2" id="ulangVotingBtn">
+                                            <a href="/ulangVoting" class="neo-btn neo-btn-secondary text-danger mr-2 mb-1" id="ulangVotingBtn">
                                                 <i class="fas fa-redo-alt mr-1"></i> Reset Voting
                                             </a>
                                             <a href="#"
-                                               class="neo-btn neo-btn-danger mb-2 {{ ( count(HasilVoting::all()) >= 1 ) ? 'disabled' : '' }}"
+                                               class="neo-btn neo-btn-danger mb-1 {{ ( count(HasilVoting::all()) >= 1 ) ? 'disabled' : '' }}"
                                                id="voteSelesaiBtn">
                                                 <i class="fas fa-lock mr-1"></i> Kunci & Selesaikan
                                             </a>
