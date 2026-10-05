@@ -24,23 +24,11 @@ Detail Paslon
                         <img src="/img_ketua/{{ $data->img_ketua }}" width="180" height="180" class="mx-auto mt-n4 rounded-circle">
                         <div class="nama mt-4 text-center">
                             <h3 class="text-center font-weight-bold" style="color: #1e293b;">{{ $data->ketua_paslon }}</h3>
-                            <p class="text-center text-muted mt-n1 mb-1 font-weight-bold">Ketua Paslon</p>
-                            <p class="text-center text-muted mb-0" style="font-size: 14.5px;">Wakil Paslon: <strong style="color: #065f46;">{{ (!empty($data->wakil_paslon) && $data->wakil_paslon !== '-') ? $data->wakil_paslon : '-' }}</strong></p>
+                            <p class="text-center text-muted mt-n1 mb-1 font-weight-bold">Calon Ketua OSIS</p>
                         </div>
                     </div>
                 </div>
             </div>
-            <!-- <div class="col-md-6">
-                <div class="card mx-auto">
-                    <div class="card-body d-flex flex-column justify-content-center">
-                        <img src="/img_wakil/{{ $data->img_wakil }}" width="180" height="180" class="mx-auto mt-n4 rounded-circle">
-                        <div class="nama mt-4">
-                            <h3 class="text-center">{{ $data->wakil_paslon }}</h3>
-                            <p class="text-center mt-n1">Wakil</p>
-                        </div>
-                    </div>
-                </div>
-            </div> -->
         </div>
         <div class="row mx-auto rowVisi">
             <div class="col-md-10">

@@ -175,7 +175,7 @@
     <div class="kop-surat">
         <img src="/img/logoss.png" class="kop-logo" alt="Logo">
         <h4>ORGANISASI SISWA INTRA SEKOLAH (OSIS)</h4>
-        <h3>PANITIA PEMILIHAN KETUA & WAKIL KETUA OSIS</h3>
+        <h3>PANITIA PEMILIHAN KETUA OSIS</h3>
         <p>Aplikasi E-Voting Pilketos Resmi • Masa Bakti 2026/2027</p>
     </div>
 
@@ -187,7 +187,7 @@
 
     <!-- Pernyataan Pembuka -->
     <p style="font-size: 13.5px; line-height: 1.6; text-align: justify; margin-bottom: 18px;">
-        Pada hari ini, <strong>{{ \Carbon\Carbon::now()->locale('id')->isoFormat('dddd, D MMMM Y') }}</strong>, telah dilaksanakan pemungutan dan penghitungan suara Pemilihan Ketua dan Wakil Ketua OSIS secara digital melalui Sistem E-Voting Pilketos dengan hasil rekapitulasi sebagai berikut:
+        Pada hari ini, <strong>{{ \Carbon\Carbon::now()->locale('id')->isoFormat('dddd, D MMMM Y') }}</strong>, telah dilaksanakan pemungutan dan penghitungan suara Pemilihan Ketua OSIS secara digital melalui Sistem E-Voting Pilketos dengan hasil rekapitulasi sebagai berikut:
     </p>
 
     <!-- Tabel Rekap Paslon -->
@@ -195,7 +195,7 @@
         <thead>
             <tr>
                 <th style="width: 10%;">No. Urut</th>
-                <th style="width: 50%;">Nama Calon Ketua & Wakil Ketua</th>
+                <th style="width: 50%;">Nama Calon Ketua OSIS</th>
                 <th style="width: 20%;">Perolehan Suara</th>
                 <th style="width: 20%;">Persentase (%)</th>
             </tr>
@@ -206,9 +206,6 @@
                 <td style="text-align: center; font-weight: bold;">{{ $hv['no_urut_paslon'] }}</td>
                 <td>
                     <strong>{{ $hv['ketua_paslon'] }}</strong>
-                    @if(!empty($hv['wakil_paslon']))
-                        <br><span style="font-size: 12px; color: #444;">Wakil: {{ $hv['wakil_paslon'] }}</span>
-                    @endif
                 </td>
                 <td style="text-align: center; font-weight: bold;">{{ $hv['jumlah_vote'] }} Suara</td>
                 <td style="text-align: center; font-weight: bold;">{{ $hv['percentage'] }}%</td>

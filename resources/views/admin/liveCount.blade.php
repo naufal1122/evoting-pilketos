@@ -185,10 +185,7 @@
                          class="paslon-img"
                          alt="{{ $hv['ketua_paslon'] }}">
 
-                    <h4 class="text-center font-weight-bold mb-1" style="color: #1e293b;">{{ $hv['ketua_paslon'] }}</h4>
-                    <p class="text-center text-muted mb-3" style="font-size: 14px;">
-                        Wakil: <span class="font-weight-bold">{{ !empty($hv['wakil_paslon']) ? $hv['wakil_paslon'] : '-' }}</span>
-                    </p>
+                    <h4 class="text-center font-weight-bold mb-3" style="color: #1e293b;">{{ $hv['ketua_paslon'] }}</h4>
                 </div>
 
                 <div class="neo-inset p-3" style="border-radius: 16px;">

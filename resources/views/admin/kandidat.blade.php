@@ -28,10 +28,9 @@ Kandidat
                                 <table class="table table-bordered mx-auto mt-3 table-striped table-responsive">
                                 <thead>
                                     <tr>
-                                        <th class="text-center" width="9%">No Urut</th>
-                                        <th class="text-center" width="23%">Nama Ketua</th>
-                                        <!-- <th class="text-center" width="23%">Nama Wakil</th> -->
-                                        <th class="text-center" width="25%">Aksi</th>
+                                        <th class="text-center" width="15%">No Urut</th>
+                                        <th class="text-center" width="55%">Nama Calon Ketua</th>
+                                        <th class="text-center" width="30%">Aksi</th>
                                     </tr>
                                 </thead>
                                 @if( count($data) == 0 )
@@ -46,7 +45,6 @@ Kandidat
                                     <tr>
                                         <td class="text-center">{{ $d->no_urut_paslon }}</td>
                                         <td class="text-center">{{ $d->ketua_paslon }}</td>
-                                        <!-- <td class="text-center">{{ $d->wakil_paslon }}</td> -->
                                         <td class="text-center">
                                             <a href="/edit/{{ $d->id }}" class="btn btn-primary btnaksi">Edit</a>
                                             <a href="/detailPaslon/{{ $d->id }}"

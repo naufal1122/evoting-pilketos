@@ -38,7 +38,7 @@ Edit Paslon
 
                                     </div>
                                 </div>
-                                <div class="col-md-10">
+                                <div class="col-md-8">
                                     <div class="form-group">
                                         <label for="exampleFormControlInput1">Nama Ketua</label>
                                         <input type="text" class="form-control" id="exampleFormControlInput1"
@@ -53,21 +53,6 @@ Edit Paslon
 
                                     </div>
                                 </div>
-                                <!-- <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label for="exampleFormControlInput1">Nama Wakil</label>
-                                        <input type="text" class="form-control" id="exampleFormControlInput1"
-                                            placeholder="Masukkan Nama Wakil" name="wakil_paslon"
-                                            value="{{ ( $errors->all() ) ? old('wakil_paslon') : $data->wakil_paslon }}">
-
-                                        @if( $errors->has('wakil_paslon') )
-                                        <div class="text-danger">
-                                            {{ $errors->first('wakil_paslon') }}
-                                        </div>
-                                        @endif
-
-                                    </div>
-                                </div> -->
                             </div>
                             <div class="row mt-3 rowInput">
                                 <div class="col-md-6">
@@ -119,28 +104,6 @@ Edit Paslon
                                     <!-- Tambahkan Preview Gambar -->
                                     <img id="previewKetua" src="{{ asset('img_ketua/' . $data->img_ketua) }}" alt="Preview Gambar Ketua" style="max-width: 15%; height: auto; margin-top: 10px;">
                                 </div>
-                            </div>
-                                <!-- <div class="col-md-6">
-                                    <label for="gambarWakil">Gambar Wakil</label>
-                                    <div class="input-group mb-3">
-                                        <div class="custom-file">
-                                            <input type="file" class="custom-file-input" id="gambarWakil"
-                                                aria-describedby="inputGroupFileAddon01" name="img_wakil"
-                                                value="{{ ( $errors->all() ) ? old('img_wakil') : $data->img_wakil }}"
-                                                onchange="previewImage()">
-                                            <label class="custom-file-label" for="gambarWakil">
-                                                <p id="filenameWakil">{{ $data->img_wakil }}</p>
-                                            </label>
-
-                                            @if( $errors->has('img_wakil') )
-                                            <div class="text-danger">
-                                                {{ $errors->first('img_wakil') }}
-                                            </div>
-                                            @endif
-
-                                        </div>
-                                    </div>
-                                </div> -->
                             </div>
                             <div class="row mt-4 mb-3 rowInput">
                                 <div class="col-md-12">

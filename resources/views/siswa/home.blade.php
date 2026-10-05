@@ -98,7 +98,6 @@ Pemilihan
 
                             <div class="nama mt-2">
                                 <h3 class="font-weight-bold mb-1" style="font-size: 24px; color: #1e293b; letter-spacing: -0.3px;">{{ $d->ketua_paslon }}</h3>
-                                <p class="text-muted mb-0" style="font-size: 15px;">Wakil: <strong style="color: #334155;">{{ !empty($d->wakil_paslon) ? $d->wakil_paslon : '-' }}</strong></p>
                             </div>
                         </div>
 
