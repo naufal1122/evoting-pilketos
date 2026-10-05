@@ -159,11 +159,11 @@
 
         <div class="col-md-4 mb-3">
             <div class="neo-card p-4 d-flex align-items-center">
-                <div style="width: 56px; height: 56px; border-radius: 14px; background: linear-gradient(135deg, #f59e0b, #d97706); display: flex; align-items: center; justify-content: center; color: white; font-size: 24px; margin-right: 18px; box-shadow: 4px 4px 10px rgba(245, 158, 11, 0.35);">
+                <div style="width: 56px; height: 56px; border-radius: 14px; background: linear-gradient(135deg, #d97706, #b45309); display: flex; align-items: center; justify-content: center; color: white; font-size: 24px; margin-right: 18px; box-shadow: 4px 4px 10px rgba(217, 119, 6, 0.35);">
                     <i class="fas fa-chart-line"></i>
                 </div>
                 <div>
-                    <h2 class="mb-0 font-weight-bold text-warning" id="persentasePartisipasiDisplay">{{ $persentasePartisipasi }}%</h2>
+                    <h2 class="mb-0 font-weight-bold" style="color: #b45309;" id="persentasePartisipasiDisplay">{{ $persentasePartisipasi }}%</h2>
                     <span class="text-muted" style="font-size: 14px; font-weight: 500;">Tingkat Partisipasi Pemilih</span>
                 </div>
             </div>
@@ -206,27 +206,9 @@
         </div>
         @endforeach
     </div>
-
-    <!-- Grafik Visualisasi -->
-    <div class="row">
-        <div class="col-md-12">
-            <div class="neo-card p-4">
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h5 class="font-weight-bold mb-0" style="color: #1e293b;">
-                        <i class="fas fa-chart-bar text-success mr-2"></i> Grafik Distribusi Suara
-                    </h5>
-                    <span class="text-muted" style="font-size: 13px;">Auto-refresh setiap 3 detik</span>
-                </div>
-                <div style="height: 320px;">
-                    <canvas id="liveChart"></canvas>
-                </div>
-            </div>
-        </div>
-    </div>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
     // Jam Realtime
     function updateClock() {
@@ -254,48 +236,7 @@
         }
     }
 
-    // Inisialisasi Chart.js
-    const initialLabels = {!! json_encode(array_column($hasilVote, 'ketua_paslon')) !!};
-    const initialData = {!! json_encode(array_column($hasilVote, 'jumlah_vote')) !!};
     const totalDPT = {{ $totalSiswa }};
-
-    const ctx = document.getElementById('liveChart').getContext('2d');
-    const liveChart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: initialLabels.map((l, i) => `Paslon ${i+1}: ${l}`),
-            datasets: [{
-                label: 'Jumlah Suara',
-                data: initialData,
-                backgroundColor: [
-                    'rgba(16, 185, 129, 0.85)',
-                    'rgba(59, 130, 246, 0.85)',
-                    'rgba(245, 158, 11, 0.85)',
-                    'rgba(139, 92, 246, 0.85)'
-                ],
-                borderRadius: 10,
-                borderWidth: 0
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    ticks: { precision: 0, font: { family: 'Poppins', size: 12 } },
-                    grid: { color: 'rgba(0,0,0,0.05)' }
-                },
-                x: {
-                    ticks: { font: { family: 'Poppins', size: 13, weight: '600' } },
-                    grid: { display: false }
-                }
-            },
-            plugins: {
-                legend: { display: false }
-            }
-        }
-    });
 
     // Polling Realtime via AJAX setiap 3 detik
     function pollLiveVotes() {
@@ -315,20 +256,15 @@
                     let pctOverall = totalDPT > 0 ? ((total / totalDPT) * 100).toFixed(1) : 0;
                     $('#persentasePartisipasiDisplay').text(pctOverall + '%');
 
-                    const newCounts = [];
                     response.hasilVote.forEach(item => {
                         const noUrut = item.no_urut_paslon;
                         const count = parseInt(item.jumlah_vote || 0);
-                        newCounts.push(count);
 
                         $(`#voteCount-${noUrut}`).text(count);
                         const pct = total > 0 ? ((count / total) * 100).toFixed(1) : 0;
                         $(`#votePct-${noUrut}`).text(pct + '%');
                         $(`#voteBar-${noUrut}`).css('width', pct + '%');
                     });
-
-                    liveChart.data.datasets[0].data = newCounts;
-                    liveChart.update();
                 }
             }
         });

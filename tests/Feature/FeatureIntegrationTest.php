@@ -239,7 +239,7 @@ class FeatureIntegrationTest extends TestCase
         $response = $this->actingAs($admin)->get('/live-count');
         $response->assertStatus(200);
         $response->assertSee('LIVE COUNT PEMILIHAN KETUA OSIS');
-        $response->assertSee('liveChart');
+        $response->assertSee('persentasePartisipasiDisplay');
         $response->assertSee('Total Daftar Pemilih (DPT)');
     }
 
